@@ -12,7 +12,6 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
-<<<<<<< Updated upstream
       : Any
     second:
       enabled: 0
@@ -36,16 +35,10 @@ PluginImporter:
       Any: 
     second:
       enabled: 0
-=======
-      Any: 
-    second:
-      enabled: 1
->>>>>>> Stashed changes
       settings: {}
   - first:
       Editor: Editor
     second:
-<<<<<<< Updated upstream
       enabled: 1
       settings:
         CPU: AnyCPU
@@ -94,11 +87,6 @@ PluginImporter:
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-=======
-      enabled: 0
-      settings:
-        DefaultValueInitialized: true
->>>>>>> Stashed changes
   userData: 
   assetBundleName: 
   assetBundleVariant: 
