@@ -9,13 +9,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings(); // Connect to Photon using your project's settings.
-        PhotonNetwork.NickName = "Player ";// Set a random nickname for the player.
+        PhotonNetwork.NickName = "Player ";
     }
 
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to Photon Master Server");
-        PhotonNetwork.JoinOrCreateRoom("TestRoom", new RoomOptions { MaxPlayers = 2 }, null); // Join or create a room named "TestRoom".
+        PhotonNetwork.JoinOrCreateRoom("TestRoom", new RoomOptions { MaxPlayers = 5 }, null); // Join or create a room named "TestRoom".
     }
 
     public override void OnJoinedRoom()
