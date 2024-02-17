@@ -17,11 +17,24 @@ public class GameManager : Singleton<GameManager>
     public static event GameEvent OnGameStart;
     public static event GameEvent OnGameEnd;
 
+
+    
     private void Start()
     {
         _sessionStartTime = DateTime.Now;
         ChangeState(new MainMenuState(this));
+        
         Debug.Log($"Game session start at: {_sessionStartTime}");
+
+        EventManager.OnPlayPressed += StartGame;
+        EventManager.OnExitPressed += EndGame;
+    }
+
+    public void OnDestroy()
+    {
+        EventManager.OnPlayPressed -= StartGame;
+        EventManager.OnExitPressed -= EndGame;
+    
     }
 
     private void OnApplicationQuit()
@@ -80,12 +93,15 @@ public class GameManager : Singleton<GameManager>
 
     public void StartGame()
     {
+        ChangeState(new NextSceneState(this));
         OnGameStart?.Invoke();
+       
     }
 
     public void EndGame()
     {
         OnGameEnd?.Invoke();
+        Application.Quit();
     }
 
     public void PauseGame()
