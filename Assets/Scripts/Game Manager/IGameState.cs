@@ -7,5 +7,5 @@ public interface IGameState
     void EnterState();
     void UpdateState();
     void ExitState();
-    void ResumeState(); // Add this method if you're using the state history stack approach
+    void ResumeState(); 
 }

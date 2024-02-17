@@ -13,22 +13,18 @@ public class MainMenuState : IGameState
 
     public void EnterState()
     {
-        // Setup MainMenu state
     }
 
     public void UpdateState()
     {
-        // Handle MainMenu logic
     }
 
     public void ExitState()
     {
-        // Cleanup MainMenu state
     }
 
     public void ResumeState()
     {
-        // Logic to resume MainMenu state
     }
 }
 

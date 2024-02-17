@@ -13,20 +13,16 @@ public class GameOverState : IGameState
 
     public void EnterState()
     {
-        // Initialize GameOver state
     }
 
     public void UpdateState()
     {
-        // Handle GameOver logic
     }
 
     public void ExitState()
     {
-        // Cleanup GameOver state
     }
     public void ResumeState()
     {
-        // Logic to resume MainMenu state
     }
 }

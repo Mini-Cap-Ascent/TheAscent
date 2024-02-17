@@ -13,21 +13,17 @@ public class InGameState : IGameState
 
     public void EnterState()
     {
-        // Initialize InGame state
     }
 
     public void UpdateState()
     {
-        // Handle InGame logic
     }
 
     public void ExitState()
     {
-        // Cleanup InGame state
     }
 
     public void ResumeState()
     {
-        // Logic to resume the InGame state
     }
 }
