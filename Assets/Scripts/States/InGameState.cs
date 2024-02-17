@@ -13,17 +13,24 @@ public class InGameState : IGameState
 
     public void EnterState()
     {
+        Debug.Log("Entering In-Game State");
+        // Initialize gameplay elements here
     }
 
     public void UpdateState()
     {
+        // Handle gameplay updates, such as player movement and game logic
     }
 
     public void ExitState()
     {
+        Debug.Log("Exiting In-Game State");
+        // Clean up gameplay elements here
     }
 
     public void ResumeState()
     {
+        Debug.Log("Resuming In-Game State");
+        // Resume gameplay if coming back from pause state
     }
 }
