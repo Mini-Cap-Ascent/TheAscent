@@ -12,20 +12,46 @@ public class GameManager : Singleton<GameManager>
     private Stack<IGameState> stateHistory = new Stack<IGameState>();
     public IGameState currentState;
     private List<SessionData> sessions = new List<SessionData>();
-
+    public Canvas canvas;
     public delegate void GameEvent();
     public static event GameEvent OnGameStart;
     public static event GameEvent OnGameEnd;
 
+    public static new GameManager Instance { get; private set; }
 
-    
+    [SerializeField] private GameObject optionsMenu;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
         _sessionStartTime = DateTime.Now;
         ChangeState(new MainMenuState(this));
         
         Debug.Log($"Game session start at: {_sessionStartTime}");
-
+        //BY TAG
+        //
+        Canvas canvas = GameObject.FindGameObjectWithTag("CanvasUI").GetComponent<Canvas>();
+        
+        if (canvas != null)
+        {
+            this.canvas = canvas;
+            canvas.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("No canvas found in scene");
+        }
         EventManager.OnPlayPressed += StartGame;
         EventManager.OnExitPressed += EndGame;
     }
@@ -45,6 +71,25 @@ public class GameManager : Singleton<GameManager>
         SaveSessionsToJson();
         Debug.Log($"Game session ended at: {_sessionEndTime}");
         Debug.Log($"Game session lasted: {timeDifference}");
+    }
+    public void ToggleOptionsMenu(bool show)
+    {
+        if (canvas != null)
+        {
+            canvas.gameObject.SetActive(show); // This will set the canvas active state based on the 'show' parameter
+            if (show)
+            {
+                PauseGame();
+            }
+            else
+            {
+                ResumeGame();
+            }
+        }
+        else
+        {
+            Debug.LogError("Canvas reference not set or found!");
+        }
     }
 
     public void ChangeState(IGameState newState)
