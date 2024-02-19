@@ -7,15 +7,15 @@ public class GameManager : Singleton<GameManager>
 {
     public static event GameEvent OnPause;
     public static event GameEvent OnResume;
-    private DateTime _sessionStartTime;
+    public static event GameEvent OnGameStart;
+    public static event GameEvent OnGameEnd;
+    public delegate void GameEvent();
+    private DateTime _sessionStartTime; 
     private DateTime _sessionEndTime;
     private Stack<IGameState> stateHistory = new Stack<IGameState>();
     public IGameState currentState;
     private List<SessionData> sessions = new List<SessionData>();
     public Canvas canvas;
-    public delegate void GameEvent();
-    public static event GameEvent OnGameStart;
-    public static event GameEvent OnGameEnd;
 
     public static new GameManager Instance { get; private set; }
 
@@ -76,7 +76,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (canvas != null)
         {
-            canvas.gameObject.SetActive(show); // This will set the canvas active state based on the 'show' parameter
+            canvas.gameObject.SetActive(show); 
             if (show)
             {
                 PauseGame();
