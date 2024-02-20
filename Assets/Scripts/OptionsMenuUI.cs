@@ -11,6 +11,9 @@ using UnityEngine.UI;
 /// </summary>
 public class OptionsMenuUI : MonoBehaviour
 {
+
+
+    
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullscreenToggle;
@@ -18,18 +21,23 @@ public class OptionsMenuUI : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Button backButton;
+    private bool isPaused = false;
     private Resolution[] resolutions;
 
     private void Start()
     {
         InitializeUIComponents();
+        InitializeUIState(); // Ensure this method is called to set initial UI state.
     }
 
     private void InitializeUIComponents()
     {
         backButton.onClick.AddListener(() =>
         {
-            GameManager.Instance.ToggleOptionsMenu(false);
+
+           EventManager.TriggerHideOptionsMenu();
+            
+
         });
 
         fullscreenToggle.onValueChanged.AddListener(isOn =>
@@ -64,13 +72,37 @@ public class OptionsMenuUI : MonoBehaviour
         });
     }
 
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (GameManager.Instance != null)
+        {
+            if (isPaused) GameManager.Instance.PauseGame();
+            else GameManager.Instance.ResumeGame();
+        }
+
+        ToggleOptionsMenuVisibility(isPaused);
+    }
+
+    private void ToggleOptionsMenuVisibility(bool isVisible)
+    {
+        gameObject.SetActive(isVisible);
+        // Ensure you find the Canvas only if needed to avoid overhead.
+        if (isVisible)
+        {
+            Canvas canvas = FindObjectOfType<Canvas>(); // Consider caching this reference.
+            if (canvas != null) canvas.gameObject.SetActive(isVisible);
+        }
+    }
+
     /// <summary>
     /// Sets the initial state of the UI based on current game settings.
     /// </summary>
     private void InitializeUIState()
     {
         LoadResolutions();
-        ToggleOptionsMenuVisibility(false);
+      
     }
 
     private void UpdateUIWithCurrentSettings()
@@ -116,8 +148,9 @@ public class OptionsMenuUI : MonoBehaviour
             Debug.LogWarning("SettingsManager instance not found. Make sure it's initialized before accessing it.");
         }
     }
+ 
 
-    
+
 
     #region Menu Visibility Management
 
@@ -205,9 +238,6 @@ public class OptionsMenuUI : MonoBehaviour
     /// Toggles the visibility of the options menu UI.
     /// </summary>
     /// <param name="isVisible">Whether the options menu should be visible.</param>
-    public void ToggleOptionsMenuVisibility(bool isVisible)
-    {
-        gameObject.SetActive(isVisible);
-    }
+   
     #endregion
 }

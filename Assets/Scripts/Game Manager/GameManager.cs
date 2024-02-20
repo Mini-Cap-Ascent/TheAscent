@@ -39,19 +39,7 @@ public class GameManager : Singleton<GameManager>
         ChangeState(new MainMenuState(this));
         
         Debug.Log($"Game session start at: {_sessionStartTime}");
-        //BY TAG
-        //
-        Canvas canvas = GameObject.FindGameObjectWithTag("CanvasUI").GetComponent<Canvas>();
-        
-        if (canvas != null)
-        {
-            this.canvas = canvas;
-            canvas.gameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("No canvas found in scene");
-        }
+  
         EventManager.OnPlayPressed += StartGame;
         EventManager.OnExitPressed += EndGame;
     }
@@ -72,24 +60,13 @@ public class GameManager : Singleton<GameManager>
         Debug.Log($"Game session ended at: {_sessionEndTime}");
         Debug.Log($"Game session lasted: {timeDifference}");
     }
-    public void ToggleOptionsMenu(bool show)
+    public void ToggleOptionsMenu()
     {
-        if (canvas != null)
-        {
-            canvas.gameObject.SetActive(show); 
-            if (show)
-            {
-                PauseGame();
-            }
-            else
-            {
-                ResumeGame();
-            }
-        }
-        else
-        {
-            Debug.LogError("Canvas reference not set or found!");
-        }
+     
+        EventManager.TriggerShowOptionsMenu();
+
+
+      
     }
 
     public void ChangeState(IGameState newState)
@@ -152,11 +129,13 @@ public class GameManager : Singleton<GameManager>
     public void PauseGame()
     {
         OnPause?.Invoke();
+        if (optionsMenu != null) optionsMenu.SetActive(true);
     }
 
     public void ResumeGame()
     {
         OnResume?.Invoke();
+        if (optionsMenu != null) optionsMenu.SetActive(false);
     }
 
     private void Update()
