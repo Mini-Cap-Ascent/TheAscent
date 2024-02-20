@@ -5,61 +5,64 @@ using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour, IGameState
 {
-    public GameObject pauseMenuUI;
+    public Canvas pauseMenuUI;
 
-
-    public void EnterState()
+    private void Awake()
     {
-        pauseMenuUI.SetActive(true);
+        // It's safer to assign this reference in the Unity Editor if possible.
+        // If not, move the initialization to Start or Awake for runtime assignment.
     }
 
-    public void UpdateState()
-    {
-        // Optional: Toggle pause menu with keyboard (e.g., Escape key).
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
-    }
-
-    public void ExitState()
-    {
-        pauseMenuUI.SetActive(false);
+    public void UpdateState() { 
+    
     }
 
     public void ResumeState()
     {
-        pauseMenuUI.SetActive(false);
+    
     }
 
     private void Start()
     {
-        pauseMenuUI.SetActive(true); // Ensure the pause menu is hidden by default.
+        // Ensure the pause menu is hidden by default.
+        pauseMenuUI.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        // Optional: Toggle pause menu with keyboard (e.g., Escape key).
+        // Toggle pause menu with keyboard (e.g., Escape key).
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
         }
     }
 
+    public void EnterState()
+    {
+        pauseMenuUI.gameObject.SetActive(true);
+        Time.timeScale = 0f; // Pause the game
+    }
+
+    public void ExitState()
+    {
+        pauseMenuUI.gameObject.SetActive(false);
+        Time.timeScale = 1f; // Resume game time
+    }
+
+    // UpdateState and ResumeState could be used for more specific behavior when changing states
+    // For simplicity, they're not elaborated here.
+
     public void TogglePause()
     {
-        bool isPaused = pauseMenuUI.activeSelf;
-        pauseMenuUI.SetActive(!isPaused);
-
+        bool isPaused = pauseMenuUI.gameObject.activeSelf;
         if (!isPaused)
         {
-            
-            Time.timeScale = 0f; // Pause the game
+            EnterState(); // Show pause menu and pause the game
             EventManager.TriggerPlayPressed(); // Assuming this means 'Pause' in your context
         }
         else
         {
-            Time.timeScale = 1f; // Resume the game
+            ExitState(); // Hide pause menu and resume the game
             EventManager.TriggerExitPressed(); // Assuming this means 'Resume' in your context
         }
     }
