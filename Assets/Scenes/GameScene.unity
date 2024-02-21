@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 581403831}
   - component: {fileID: 581403835}
   m_Layer: 5
-  m_Name: PauseMenuCanvas
+  m_Name: OptionsMenuUI
   m_TagString: CanvasUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -909,7 +909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb792f53173fd0429bfee24d003bc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 0}
+  pauseMenuUI: {fileID: 581403833}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,6 +1358,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 113098138045776670, guid: 0b30d8da59f0f4f428a981f41286f07a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1791561104}
+    - targetCorrespondingSourceObject: {fileID: 113098138045776670, guid: 0b30d8da59f0f4f428a981f41286f07a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1791561105}
   m_SourcePrefab: {fileID: 100100000, guid: 0b30d8da59f0f4f428a981f41286f07a, type: 3}
 --- !u!1 &1191914898
 GameObject:
@@ -1752,6 +1755,19 @@ MonoBehaviour:
   musicVolumeSlider: {fileID: 906614253}
   sfxVolumeSlider: {fileID: 906614253}
   backButton: {fileID: 1087090782}
+--- !u!114 &1791561105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791561101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb792f53173fd0429bfee24d003bc49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 581403833}
 --- !u!1 &1942367995
 GameObject:
   m_ObjectHideFlags: 0
