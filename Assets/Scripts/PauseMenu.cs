@@ -8,32 +8,21 @@ public class PauseMenu : MonoBehaviour, IGameState
 {
     public Canvas pauseMenuUI;
     public Button pauseButton;
+
     private void Awake()
     {
-        // It's safer to assign this reference in the Unity Editor if possible.
-        // If not, move the initialization to Start or Awake for runtime assignment.
-       // pauseButton.onClick.AddListener(TogglePause);
+        pauseButton.onClick.AddListener(TogglePause);
+         // Make sure this line is not commented out.
     }
 
-    public void UpdateState() { 
-    
-    }
+    public void UpdateState() { }
 
-    public void ResumeState()
-    {
-    
-    }
-
+    public void ResumeState() { }
 
     private void Start()
     {
-        // Ensure the pause menu is hidden by default.
         pauseMenuUI.gameObject.SetActive(false);
-    }
-
-    private void Update()
-    {
-      
+       
     }
 
     public void EnterState()
@@ -48,22 +37,21 @@ public class PauseMenu : MonoBehaviour, IGameState
         Time.timeScale = 1f; // Resume game time
     }
 
-    // UpdateState and ResumeState could be used for more specific behavior when changing states
-    // For simplicity, they're not elaborated here.
-
     public void TogglePause()
     {
         bool isPaused = pauseMenuUI.gameObject.activeSelf;
         if (!isPaused)
         {
             EnterState(); // Show pause menu and pause the game
-            EventManager.TriggerShowOptionsMenu(); // Assuming this means 'Pause' in your context
+            // Assuming this means 'Pause' in your context
+            EventManager.TriggerShowOptionsMenu();
         }
         else
         {
             ExitState(); // Hide pause menu and resume the game
-            EventManager.TriggerExitPressed(); // Assuming this means 'Resume' in your context
+            // Assuming this means 'Resume' in your context
+            EventManager.TriggerExitPressed();
         }
     }
-}   
+}
 
