@@ -6,6 +6,7 @@ public class MainMenuState : MonoBehaviour, IGameState
 {
     private GameManager _gameManager;
 
+
     void Awake()
     {
         // Find the GameManager instance in the scene and assign it
@@ -19,28 +20,23 @@ public class MainMenuState : MonoBehaviour, IGameState
 
     public void EnterState()
     {
-        Debug.Log("Entering Main Menu State");
+        //Debug.Log("Entering Main Menu State");
     }
 
     public void UpdateState()
     {
-        Debug.Log("Updating Main Menu State");
+        //Debug.Log("Updating Main Menu State");
     }
 
     public void ExitState()
     {
-        Debug.Log("Exiting Main Menu State");
-        Application.Quit();
+        //Application.Quit();
+        //Debug.Log("Exiting Main Menu State");
     }
 
     public void PlayGame()
     {
         _gameManager.ChangeState(new NextSceneState(_gameManager));
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
     }
 
     public void ResumeState()
@@ -55,6 +51,11 @@ public class MainMenuState : MonoBehaviour, IGameState
         _gameManager.ChangeState(new NextSceneState(_gameManager));
     }
 
+    public void OnExitButtonClicked()
+    {
+        Application.Quit();
+        Debug.Log("Exiting Game");
+    }
  
 }
 

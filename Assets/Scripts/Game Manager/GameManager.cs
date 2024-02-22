@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public static event GameEvent OnPause;
-    public static event GameEvent OnResume;
     public static event GameEvent OnGameStart;
     public static event GameEvent OnGameEnd;
     public delegate void GameEvent();
@@ -16,6 +14,8 @@ public class GameManager : Singleton<GameManager>
     public IGameState currentState;
     private List<SessionData> sessions = new List<SessionData>();
     public Canvas canvas;
+
+    public bool IsPaused { get; set; }
 
     public static new GameManager Instance { get; private set; }
 
@@ -126,30 +126,42 @@ public class GameManager : Singleton<GameManager>
         Application.Quit();
     }
 
+    private void Update()
+    {
+        //currentState?.UpdateState();
+
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    StartGame();
+        //}
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    EndGame();
+        //}
+    }
+
+    private void OnEnable()
+    {
+        EventManager.OnPauseGame += PauseGame;
+        EventManager.OnResumeGame += ResumeGame;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnPauseGame -= PauseGame;
+        EventManager.OnResumeGame -= ResumeGame;
+    }
+
     public void PauseGame()
     {
-        OnPause?.Invoke();
-        if (optionsMenu != null) optionsMenu.SetActive(true);
+        IsPaused = true;
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
-        OnResume?.Invoke();
-        if (optionsMenu != null) optionsMenu.SetActive(false);
-    }
-
-    private void Update()
-    {
-        currentState?.UpdateState();
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StartGame();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            EndGame();
-        }
+        IsPaused = false;
+        Time.timeScale = 1f;
     }
 }
 

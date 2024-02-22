@@ -14,6 +14,9 @@ public static class EventManager
     public static event Action<int, int, bool> OnResolutionChanged;
     public static event Action<bool> OnFullscreenToggled;
 
+    public static event Action OnPauseGame;
+    public static event Action OnResumeGame;
+
     // Define trigger methods for each event
     public static void TriggerAudioSettingsChanged(float master, float music, float sfx) => OnAudioSettingsChanged?.Invoke(master, music, sfx);
     public static void TriggerQualityLevelChanged(int qualityLevel) => OnQualityLevelChanged?.Invoke(qualityLevel);
@@ -25,6 +28,10 @@ public static class EventManager
     // Methods to trigger events
     public static void TriggerPlayPressed() => OnPlayPressed?.Invoke();
     public static void TriggerExitPressed() => OnExitPressed?.Invoke();
+
+
+    public static void TriggerPauseGame() => OnPauseGame?.Invoke();
+    public static void TriggerResumeGame() => OnResumeGame?.Invoke();
 
     internal static void TriggerHideOptionsMenu()
     {
