@@ -27,7 +27,11 @@ public class OptionsMenuUI : MonoBehaviour
     private void Start()
     {
         InitializeUIComponents();
-        InitializeUIState(); // Ensure this method is called to set initial UI state.
+        InitializeUIState();
+        UpdateUIWithCurrentSettings();
+
+
+        // Ensure this method is called to set initial UI state.
     }
 
     private void InitializeUIComponents()
@@ -35,8 +39,9 @@ public class OptionsMenuUI : MonoBehaviour
         backButton.onClick.AddListener(() =>
         {
 
-           EventManager.TriggerHideOptionsMenu();
-            
+            ToggleOptionsMenuVisibility(false);
+
+
 
         });
 

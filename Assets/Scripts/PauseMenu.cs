@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour, IGameState
 {
     public Canvas pauseMenuUI;
-
+    public Button pauseButton;
     private void Awake()
     {
         // It's safer to assign this reference in the Unity Editor if possible.
         // If not, move the initialization to Start or Awake for runtime assignment.
+       // pauseButton.onClick.AddListener(TogglePause);
     }
 
     public void UpdateState() { 
@@ -22,6 +24,7 @@ public class PauseMenu : MonoBehaviour, IGameState
     
     }
 
+
     private void Start()
     {
         // Ensure the pause menu is hidden by default.
@@ -30,11 +33,7 @@ public class PauseMenu : MonoBehaviour, IGameState
 
     private void Update()
     {
-        // Toggle pause menu with keyboard (e.g., Escape key).
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
+      
     }
 
     public void EnterState()
@@ -58,7 +57,7 @@ public class PauseMenu : MonoBehaviour, IGameState
         if (!isPaused)
         {
             EnterState(); // Show pause menu and pause the game
-            EventManager.TriggerPlayPressed(); // Assuming this means 'Pause' in your context
+            EventManager.TriggerShowOptionsMenu(); // Assuming this means 'Pause' in your context
         }
         else
         {
