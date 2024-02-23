@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5777737949095231676}
   - component: {fileID: 2777715641022515368}
   - component: {fileID: 3677834156121990160}
+  - component: {fileID: 2987301137547388262}
   m_Layer: 0
   m_Name: Actor
   m_TagString: Untagged
@@ -149,6 +150,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2987301137547388262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131394554191527115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fedee8b79c1c54185522f705063d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
 --- !u!1 &6921399913762115846
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,13 +235,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 2.03
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.77, z: 0}
 --- !u!114 &7168875653678367477
 MonoBehaviour:
   m_ObjectHideFlags: 0
