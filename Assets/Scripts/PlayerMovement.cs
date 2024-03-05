@@ -6,18 +6,18 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 10.0f;
-    private PlayerControl controls;
+    private PlayerCont controls;
     private Vector2 move;
     private Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        controls = new PlayerControl();
+        controls = new PlayerCont();
 
         // Bind the Move action
-        controls.PlayerControls.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
-        controls.PlayerControls.Move.canceled += ctx => move = Vector2.zero;
+        controls.PlayerControlz.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
+        controls.PlayerControlz.Move.canceled += ctx => move = Vector2.zero;
     }
 
     private void OnEnable()
