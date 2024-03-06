@@ -107,7 +107,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""70d0a436-b626-4eac-a53d-8b08793dd22c"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/stick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -118,7 +118,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""2903fcc9-a43d-451e-913d-0b5246e60926"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -129,7 +129,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""fabed666-47fb-46f8-ba62-1c594020aefd"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/stick/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -140,7 +140,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""1b564367-c303-4dad-af1b-962c58cdb41f"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/stick/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
