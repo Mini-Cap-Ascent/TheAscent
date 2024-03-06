@@ -122,7 +122,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+<<<<<<< Updated upstream
   spline: {fileID: 0}
+=======
+  spline: {fileID: 8316852292190771098, guid: 6c35e2ec39217d14397615b9a3015770, type: 3}
+>>>>>>> Stashed changes
 --- !u!54 &3677834156121990160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -263,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   spline: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!1 &7824924505124886539
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,3 +407,5 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+=======
+>>>>>>> Stashed changes
