@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Camera mainCamera = Camera.main;
+
         if (onSpline)
         {
             // This needs to be the actual input method for moving along the spline.
@@ -56,9 +58,21 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Regular free movement
-            Vector3 movement = new Vector3(move.x, 0, move.y) * moveSpeed * Time.fixedDeltaTime;
+            Vector3 cameraForward = mainCamera.transform.forward;
+            Vector3 cameraRight = mainCamera.transform.right;
+            cameraForward.y = 0;
+            cameraRight.y = 0;
+            cameraForward.Normalize();
+            cameraRight.Normalize();
+
+            Vector3 movement = (cameraForward * move.y + cameraRight * move.x) * moveSpeed * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + movement);
+
+            if (movement != Vector3.zero)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
+                rb.MoveRotation(toRotation);
+            }
         }
     }
 
