@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Splines;
-
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,17 +7,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 move;
     private Rigidbody rb;
 
-    // Spline movement specific variables
-    public SplineContainer spline; // Assuming the spline is a BezierSpline
-    private bool onSpline = false;
-    private float progressAlongSpline = 0f;// Progress along the spline.
+    public GameObject cameraTarget; // Assign this in the inspector
+    public float rotationSpeed = 5f; // Adjust as needed
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         controls = new PlayerCont();
 
-        // Bind the Move action
         controls.PlayerControlz.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.PlayerControlz.Move.canceled += ctx => move = Vector2.zero;
     }
@@ -38,70 +31,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Camera mainCamera = Camera.main;
+        Vector3 movement = new Vector3(move.x, 0, move.y) * moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + movement);
 
-        if (onSpline)
+        // Update camera target's position to player's position
+        if (cameraTarget != null)
         {
-            // This needs to be the actual input method for moving along the spline.
-            progressAlongSpline += move.x * Time.fixedDeltaTime * moveSpeed;
-            progressAlongSpline = Mathf.Clamp01(progressAlongSpline);
-
-            // Here we need to replace this with the actual method for evaluating the spline position.
-            // Pseudocode: You'll need to implement this based on Unity's spline API
-            Vector3 splinePosition = GetPointAlongSpline(progressAlongSpline);
-            rb.MovePosition(splinePosition);
-
-            // Unity's spline might not give you the tangent directly, this is a placeholder.
-            // Pseudocode: You'll need to implement this or a similar method
-            Quaternion splineRotation = GetRotationAlongSpline(progressAlongSpline);
-            rb.MoveRotation(splineRotation);
-        }
-        else
-        {
-            Vector3 cameraForward = mainCamera.transform.forward;
-            Vector3 cameraRight = mainCamera.transform.right;
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-            cameraForward.Normalize();
-            cameraRight.Normalize();
-
-            Vector3 movement = (cameraForward * move.y + cameraRight * move.x) * moveSpeed * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-
-            if (movement != Vector3.zero)
+            cameraTarget.transform.position = rb.position;
+            if (move != Vector2.zero)
             {
-                Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
-                rb.MoveRotation(toRotation);
+                // Calculate the rotation towards the movement direction
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(move.x, 0, move.y));
+                // Smoothly rotate the camera target towards the calculated rotation
+                cameraTarget.transform.rotation = Quaternion.Slerp(cameraTarget.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
             }
         }
     }
-
-    // Call this method to toggle whether the player is on the spline or not.
-    public void ToggleSplineMovement(bool isOnSpline)
-    {
-        onSpline = isOnSpline;
-        // Reset the progress when attaching to the spline.
-        if (onSpline)
-        {
-            progressAlongSpline = 0f;
-        }
-    }
-
-    Vector3 GetPointAlongSpline(float progress)
-    {
-        // If the Spline API provides a method to evaluate the position at a certain progress.
-        // Replace 'EvaluatePosition' with the actual method name from the Unity Spline API.
-        return spline.EvaluatePosition(progress);
-    }
-
-    Quaternion GetRotationAlongSpline(float progress)
-    {
-        // If the Spline API provides a method to evaluate the tangent at a certain progress.
-        // Replace 'EvaluateTangent' with the actual method name from the Unity Spline API.
-        Vector3 tangent = spline.EvaluateTangent(progress);
-        // Construct a rotation looking in the direction of the tangent.
-        // This assumes 'up' is the global Y-axis; modify as needed for your use case.
-        return Quaternion.LookRotation(tangent, Vector3.up);
-    }
 }
-
