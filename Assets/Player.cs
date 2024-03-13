@@ -20,5 +20,5 @@ public class Player : NetworkBehaviour
             _cc.Move(5 * data.direction * Runner.DeltaTime);
         }
     }
-   
+
 }
