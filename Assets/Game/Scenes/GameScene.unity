@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: 53392f4c4e70db940ad4d9fcbbed411a
+    RawGuidValue: ac60b79dd63199f4391691cc3f5686c0
 --- !u!4 &38030151
 Transform:
   m_ObjectHideFlags: 0
@@ -700,8 +700,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100.29953, y: 0.95, z: 178.15628}
+  m_LocalRotation: {x: 0, y: 0.99901354, z: -1e-45, w: 0.04440685}
+  m_LocalPosition: {x: 98.62019, y: 1.8985367, z: 194.42703}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
