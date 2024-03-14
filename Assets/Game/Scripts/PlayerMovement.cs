@@ -14,6 +14,7 @@ public class PlayerMovement : NetworkBehaviour
     private Vector2 move;
     private Vector2 rotate; // Add this line to store the rotation value
     private Rigidbody rb;
+    private Animator animator;
 
     private NetworkCharacterController _cc;
     private CinemachineOrbitalTransposer orbitalTransposer; // Add this for camera control
@@ -23,9 +24,26 @@ public class PlayerMovement : NetworkBehaviour
         if (GetInput(out NetworkInputData data))
         {
             data.direction.Normalize();
-            _cc.Move(moveSpeed * data.direction * Runner.DeltaTime);
+            bool isMoving = data.direction.magnitude > 0; // Check if there is movement
 
-            // Add rotation logic here, if necessary
+            // Move the character
+            if (isMoving)
+            {
+                _cc.Move(moveSpeed * data.direction * Runner.DeltaTime);
+                animator.SetFloat("Speed", data.direction.magnitude); // Set the Speed parameter for the Animator
+            }
+            else
+            {
+                animator.SetFloat("Speed", 0); // Set the Speed to 0 if not moving
+            }
+            if (move != Vector2.zero) {
+
+                Vector3 moveDirection = new Vector3(move.x, 0, move.y);
+                Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+
+            }
+            // Handle rotation here if necessary
         }
     }
 
@@ -39,6 +57,8 @@ public class PlayerMovement : NetworkBehaviour
 
         controls.CameraControll.Rotate.performed += ctx => rotate = ctx.ReadValue<Vector2>(); // Add this line
         controls.CameraControll.Rotate.canceled += ctx => rotate = Vector2.zero; // Add this line
+
+        animator = GetComponent<Animator>();
 
         _cc = GetComponent<NetworkCharacterController>();
         orbitalTransposer = FindObjectOfType<CinemachineOrbitalTransposer>(); // Add this line
