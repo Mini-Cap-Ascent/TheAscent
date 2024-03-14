@@ -18,7 +18,7 @@ public class SettingsManager : Singleton<SettingsManager>
     #endregion
 
     #region Unity Lifecycle
-    protected override void Awake()
+    public override void Awake()
     {
         base.Awake();
         EventManager.OnAudioSettingsChanged += SaveAndApplyAudioSettings;

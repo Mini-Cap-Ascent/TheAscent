@@ -49,9 +49,11 @@ public class PlayerMovement : NetworkBehaviour
         // Assuming you want to rotate the camera in Update
         if (orbitalTransposer != null)
         {
-            // Modify the orbitalTransposer.m_XAxis.Value based on rotate.x input
-            // You might want to multiply rotate.x by a speed factor to control the rotation speed
-            orbitalTransposer.m_XAxis.Value += rotate.x * rotationSpeed *Time.deltaTime;
+            // Determine the target rotation value
+            float targetRotationValue = orbitalTransposer.m_XAxis.Value + rotate.x * rotationSpeed * Time.deltaTime;
+
+            // Smoothly interpolate the camera's rotation towards the target rotation value
+            orbitalTransposer.m_XAxis.Value = Mathf.Lerp(orbitalTransposer.m_XAxis.Value, targetRotationValue, Time.deltaTime * rotationSpeed);
         }
     }
 

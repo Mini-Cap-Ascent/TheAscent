@@ -45,12 +45,14 @@ public class PausedMenu : MonoBehaviour
     {
         PauseMenuCanvas.SetActive(true);
         GameManager.Instance.IsPaused = true;
+        Time.timeScale = 0f;
     }
 
     public void HidePauseMenu()
     {
         PauseMenuCanvas.SetActive(false);
         GameManager.Instance.IsPaused = false;
+        Time.timeScale = 1f;
     }
 
     public void MainMenuButton()
