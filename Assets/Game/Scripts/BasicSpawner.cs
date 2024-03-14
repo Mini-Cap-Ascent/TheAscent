@@ -13,7 +13,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
         if (runner.IsServer)
-        {
+        {// Assuming you want the host to manage the game but not participate as a player character.
+         // Skip spawning a character for the host.
+         // You can identify the host in Photon Fusion by comparing the player reference with the runner's LocalPlayer reference.
+            if (player == runner.LocalPlayer)
+            {
+                // This is the host; don't spawn a character for the host.
+                return;
+            }
+
             // Create a unique position for the player
             Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
