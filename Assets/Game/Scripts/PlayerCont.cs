@@ -151,41 +151,74 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""ChangeCamera"",
+            ""name"": ""CameraControll"",
             ""id"": ""63262a01-44bb-476d-9b35-65fba0f5791c"",
             ""actions"": [
                 {
-                    ""name"": ""Switch"",
-                    ""type"": ""Button"",
-                    ""id"": ""5f9411d9-d413-466e-afe9-0df71d434c74"",
-                    ""expectedControlType"": ""Button"",
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""bea46227-55da-4bef-bbae-9e01a0a7cc81"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""dc733965-727b-4249-b154-d99c60f7c436"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""326d2122-256f-4194-86db-eabd1ac6dd3c"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Switch"",
-                    ""isComposite"": false,
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""19f4b3a0-ae53-41fe-bdfd-1e342b123bcd"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""name"": ""up"",
+                    ""id"": ""59eb0400-8f61-4398-9afc-08375e05a4ad"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Switch"",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""aeec595b-ccb7-4ff7-a646-2d3e38ede9e8"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c804d39a-189a-41d5-8dba-09aca4f4c1c9"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""35a05e3f-ed7d-4b17-ad69-f308765b4d4e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -195,9 +228,9 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
         // PlayerControlz
         m_PlayerControlz = asset.FindActionMap("PlayerControlz", throwIfNotFound: true);
         m_PlayerControlz_Move = m_PlayerControlz.FindAction("Move", throwIfNotFound: true);
-        // ChangeCamera
-        m_ChangeCamera = asset.FindActionMap("ChangeCamera", throwIfNotFound: true);
-        m_ChangeCamera_Switch = m_ChangeCamera.FindAction("Switch", throwIfNotFound: true);
+        // CameraControll
+        m_CameraControll = asset.FindActionMap("CameraControll", throwIfNotFound: true);
+        m_CameraControll_Rotate = m_CameraControll.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -302,57 +335,57 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
     }
     public PlayerControlzActions @PlayerControlz => new PlayerControlzActions(this);
 
-    // ChangeCamera
-    private readonly InputActionMap m_ChangeCamera;
-    private List<IChangeCameraActions> m_ChangeCameraActionsCallbackInterfaces = new List<IChangeCameraActions>();
-    private readonly InputAction m_ChangeCamera_Switch;
-    public struct ChangeCameraActions
+    // CameraControll
+    private readonly InputActionMap m_CameraControll;
+    private List<ICameraControllActions> m_CameraControllActionsCallbackInterfaces = new List<ICameraControllActions>();
+    private readonly InputAction m_CameraControll_Rotate;
+    public struct CameraControllActions
     {
         private @PlayerCont m_Wrapper;
-        public ChangeCameraActions(@PlayerCont wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Switch => m_Wrapper.m_ChangeCamera_Switch;
-        public InputActionMap Get() { return m_Wrapper.m_ChangeCamera; }
+        public CameraControllActions(@PlayerCont wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Rotate => m_Wrapper.m_CameraControll_Rotate;
+        public InputActionMap Get() { return m_Wrapper.m_CameraControll; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ChangeCameraActions set) { return set.Get(); }
-        public void AddCallbacks(IChangeCameraActions instance)
+        public static implicit operator InputActionMap(CameraControllActions set) { return set.Get(); }
+        public void AddCallbacks(ICameraControllActions instance)
         {
-            if (instance == null || m_Wrapper.m_ChangeCameraActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ChangeCameraActionsCallbackInterfaces.Add(instance);
-            @Switch.started += instance.OnSwitch;
-            @Switch.performed += instance.OnSwitch;
-            @Switch.canceled += instance.OnSwitch;
+            if (instance == null || m_Wrapper.m_CameraControllActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CameraControllActionsCallbackInterfaces.Add(instance);
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
-        private void UnregisterCallbacks(IChangeCameraActions instance)
+        private void UnregisterCallbacks(ICameraControllActions instance)
         {
-            @Switch.started -= instance.OnSwitch;
-            @Switch.performed -= instance.OnSwitch;
-            @Switch.canceled -= instance.OnSwitch;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
-        public void RemoveCallbacks(IChangeCameraActions instance)
+        public void RemoveCallbacks(ICameraControllActions instance)
         {
-            if (m_Wrapper.m_ChangeCameraActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_CameraControllActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IChangeCameraActions instance)
+        public void SetCallbacks(ICameraControllActions instance)
         {
-            foreach (var item in m_Wrapper.m_ChangeCameraActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_CameraControllActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ChangeCameraActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_CameraControllActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ChangeCameraActions @ChangeCamera => new ChangeCameraActions(this);
+    public CameraControllActions @CameraControll => new CameraControllActions(this);
     public interface IPlayerControlzActions
     {
         void OnMove(InputAction.CallbackContext context);
     }
-    public interface IChangeCameraActions
+    public interface ICameraControllActions
     {
-        void OnSwitch(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }
