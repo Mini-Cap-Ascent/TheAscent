@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f27f01bbcdd96844999bf95b813872d, type: 3}
   m_Name: AudioAsset
   m_EditorClassIdentifier: 
-  name: 
-  clip: {fileID: 0}
+  name: StartUp
+  clip: {fileID: 8300000, guid: 8bed38e9084cf9c45bba56586b1aa7fc, type: 3}
   volume: 1
   pitch: 1
   loop: 0
