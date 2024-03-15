@@ -35,6 +35,15 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a30f106-fb87-4a65-ab7a-22a534457d4b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -147,6 +156,17 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d532630-f5d2-4de5-8a82-20bf099a1777"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -228,6 +248,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
         // PlayerControlz
         m_PlayerControlz = asset.FindActionMap("PlayerControlz", throwIfNotFound: true);
         m_PlayerControlz_Move = m_PlayerControlz.FindAction("Move", throwIfNotFound: true);
+        m_PlayerControlz_Jump = m_PlayerControlz.FindAction("Jump", throwIfNotFound: true);
         // CameraControll
         m_CameraControll = asset.FindActionMap("CameraControll", throwIfNotFound: true);
         m_CameraControll_Rotate = m_CameraControll.FindAction("Rotate", throwIfNotFound: true);
@@ -293,11 +314,13 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerControlz;
     private List<IPlayerControlzActions> m_PlayerControlzActionsCallbackInterfaces = new List<IPlayerControlzActions>();
     private readonly InputAction m_PlayerControlz_Move;
+    private readonly InputAction m_PlayerControlz_Jump;
     public struct PlayerControlzActions
     {
         private @PlayerCont m_Wrapper;
         public PlayerControlzActions(@PlayerCont wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerControlz_Move;
+        public InputAction @Jump => m_Wrapper.m_PlayerControlz_Jump;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControlz; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerControlzActions instance)
@@ -317,6 +343,9 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerControlzActions instance)
@@ -383,6 +412,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
     public interface IPlayerControlzActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface ICameraControllActions
     {

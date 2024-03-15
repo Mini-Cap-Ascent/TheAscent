@@ -66,13 +66,9 @@ namespace Fusion {
     }
 
 
-    public void Jump(bool ignoreGrounded = false, float? overrideImpulse = null) {
-      if (Data.Grounded || ignoreGrounded) {
-        var newVel = Data.Velocity;
-        newVel.y      += overrideImpulse ?? jumpImpulse;
-        Data.Velocity =  newVel;
-      }
-    }
+    public void Jump() {
+            Data.Grounded = false;
+        }
 
     public void Move(Vector3 direction) {
       var deltaTime    = Runner.DeltaTime;
