@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   rotationSpeed: 100
-  jumpHeight: 2
+  jumpHeight: 25.19
   jumpDuration: 0.5
 --- !u!114 &835957501657261198
 MonoBehaviour:
@@ -1166,7 +1166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677301739165721573}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.004928653, y: 0.70721614, z: -0.004930417, w: 0.7069631}
+  m_LocalRotation: {x: 0.0052729095, y: 0.7075807, z: -0.0052802786, w: 0.7065932}
   m_LocalPosition: {x: -7.3586946, y: 1.4490125, z: -0.024162088}
   m_LocalScale: {x: 0.6094823, y: 0.7474775, z: 0.73466104}
   m_ConstrainProportionsScale: 0
