@@ -12,7 +12,8 @@ public class Enemy_Controller : MonoBehaviour
     public List<GameObject> Waypoints = new List<GameObject>();
     public int currentWaypoint = 0;
     public NavMeshAgent agent;
-
+    public float health = 100f;
+    public Enemy_FSM fsm;
 
 
     [HideInInspector]public NavMeshPath path;
@@ -25,6 +26,7 @@ public class Enemy_Controller : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
+        fsm = GetComponent<Enemy_FSM>();
 
         if(WaypointParents != null)
         {
@@ -69,5 +71,7 @@ public class Enemy_Controller : MonoBehaviour
         agent.SetDestination(nextWaypoint.transform.position);
 
     }
+
+   
 
 }
