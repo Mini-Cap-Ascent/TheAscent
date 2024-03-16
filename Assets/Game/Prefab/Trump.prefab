@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.12
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -64,19 +64,67 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trump
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7b68c22baef3a3248aee78e5cd3cebdb, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+        'mixamorig:RightHandRing2'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+        'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+        'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'Walking'\n\tFrom
+        animation clip 'Running'\n\tFrom animation clip 'Step Hip Hop Dance'\n\tFrom
+        animation clip 'Walking'\n\tFrom animation clip 'Running'\n\tFrom animation
+        clip 'Step Hip Hop Dance'"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 8844201714922323249}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1589110567402936378}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4647829597012637063}
   m_SourcePrefab: {fileID: 100100000, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+--- !u!95 &4398761547013310190 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+  m_PrefabInstance: {fileID: 7809558394932624255}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6962694948196828718 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
   m_PrefabInstance: {fileID: 7809558394932624255}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8844201714922323249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6962694948196828718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f51e9ec318f5a489681241767f0b7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controller: {fileID: 4647829597012637063}
+  _animator: {fileID: 4398761547013310190}
+  _playerTransform: {fileID: 7776492279264287892}
+  _patrolPoints:
+  - {fileID: 2641544917904098055, guid: 0dfe8b218650f934bbb20e0ced0f3901, type: 3}
+  - {fileID: 3660244670953715886, guid: 38902c6901e1ae249b766b4f6d549887, type: 3}
+  _chaseDistance: 10
+  _danceDistance: 2
 --- !u!114 &1589110567402936378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,3 +145,34 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   angularDampeningTime: 5
   deadZone: 10
+--- !u!143 &4647829597012637063
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6962694948196828718}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2.51
+  m_Radius: 0.61
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.08, z: 0}
+--- !u!4 &7776492279264287892 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+  m_PrefabInstance: {fileID: 7809558394932624255}
+  m_PrefabAsset: {fileID: 0}

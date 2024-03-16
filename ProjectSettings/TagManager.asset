@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CanvasUI
+  - Player1
+  - Enemy
   layers:
   - Default
   - TransparentFX
