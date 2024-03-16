@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-[RequireComponent( typeof(Enemy_Controller))]
+[RequireComponent( typeof(NavMeshAgent), typeof(Enemy_Controller))]
 public class Enemy_FSM : FSM
 {
-    public readonly string JogStateName = "Jog";
     public readonly string PatrolStateName = "Patroling";
-    public readonly string PlayerSpottedStateName = "PlayerSpotted";
+    public readonly string EnemyFoundStateName = "EnemyFound";
     public readonly string DeathStateName = "Death";
 }

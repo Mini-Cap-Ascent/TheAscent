@@ -98,6 +98,14 @@ public class PlayerMovement : NetworkBehaviour
         wantToJump = false;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        Enemy_Patrol_FSM enemy = collision.collider.GetComponent<Enemy_Patrol_FSM>();
+        if (enemy != null)
+        {
+            enemy.TakeDamage(10f); // Deals 10 damage
+        }
+    }
     private void ContinueJump()
     {
         float elapsedTime = Time.time - jumpStartTime;
