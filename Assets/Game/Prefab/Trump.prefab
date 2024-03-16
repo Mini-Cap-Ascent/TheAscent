@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7809558394932624255
+--- !u!1001 &3762955869813740722
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -62,10 +62,99 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       propertyPath: m_Name
-      value: Trump
+      value: Trump 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 533ee1d17be3f3e4dbae3ca1fc23d539, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3976275480427674918}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1746089199164539728}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6719279012180144037}
   m_SourcePrefab: {fileID: 100100000, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+--- !u!1 &4105556338366818787 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+  m_PrefabInstance: {fileID: 3762955869813740722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &3976275480427674918
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105556338366818787}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1746089199164539728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105556338366818787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566b70e80f8c9954497cfbadb2c112dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7300935075082316067}
+  WaypointParents: {fileID: 0}
+  Waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  currentWaypoint: 0
+  drawPath: 0
+--- !u!114 &6719279012180144037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105556338366818787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94a8b39fc05eca498c77aaafe03c8f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FSMController: {fileID: 9100000, guid: 33c1ad5f2d8d73f41bfe535586c43249, type: 2}
+--- !u!95 &7300935075082316067 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+  m_PrefabInstance: {fileID: 3762955869813740722}
+  m_PrefabAsset: {fileID: 0}
