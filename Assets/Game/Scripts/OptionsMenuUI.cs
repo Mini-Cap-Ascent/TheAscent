@@ -11,94 +11,97 @@ using UnityEngine.UI;
 /// </summary>
 public class OptionsMenuUI : MonoBehaviour
 {
-
-
-    
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    #region Fields
+    [SerializeField] private TMP_Dropdown resolutionDropwdon;
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private Slider masterVolumeSlider;
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Button backButton;
-    private bool isPaused = false;
     private Resolution[] resolutions;
+    #endregion
+
+    #region Unity Methods
 
     private void Start()
     {
-        InitializeUIComponents();
         InitializeUIState();
         UpdateUIWithCurrentSettings();
-
-
-        // Ensure this method is called to set initial UI state.
+        InitializeUIComponents();
+        SubscribeToEvents();
     }
 
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+    #endregion
+
+    #region Initialization
+    /// <summary>
+    /// Initializes UI components and registers callbacks for UI interactions.
+    /// </summary>
     private void InitializeUIComponents()
     {
+        // Back Button
         backButton.onClick.AddListener(() =>
         {
-
-            ToggleOptionsMenuVisibility(false);
-
-
-
+            AudioManager.Instance.PlaySound("BtnClick");
+            GameManager.Instance.ResumePreviousState();
         });
 
+        // Fullscreen Toggle
         fullscreenToggle.onValueChanged.AddListener(isOn =>
         {
-            EventManager.TriggerFullscreenToggled(isOn);
+            SettingsManager.Instance.SaveIsFullScreen(isOn);
         });
 
+        // Master Volume Slider
         masterVolumeSlider.onValueChanged.AddListener(volume =>
         {
-            EventManager.TriggerAudioSettingsChanged(volume, musicVolumeSlider.value, sfxVolumeSlider.value);
+            SettingsManager.Instance.SaveAudioSettings(
+                volume,
+                musicVolumeSlider.value,
+                sfxVolumeSlider.value
+            );
         });
 
+        // Music Volume Slider 
         musicVolumeSlider.onValueChanged.AddListener(volume =>
         {
-            EventManager.TriggerAudioSettingsChanged(masterVolumeSlider.value, volume, sfxVolumeSlider.value);
+            SettingsManager.Instance.SaveAudioSettings(
+                masterVolumeSlider.value,
+                volume,
+                sfxVolumeSlider.value
+            );
         });
 
+        // SFX Volume Slider
         sfxVolumeSlider.onValueChanged.AddListener(volume =>
         {
-            EventManager.TriggerAudioSettingsChanged(masterVolumeSlider.value, musicVolumeSlider.value, volume);
+            SettingsManager.Instance.SaveAudioSettings(
+                masterVolumeSlider.value,
+                musicVolumeSlider.value,
+                volume
+            );
         });
 
-        resolutionDropdown.onValueChanged.AddListener(index =>
+        // Assuming resolutionDropdown is correctly set up elsewhere
+        resolutionDropwdon.onValueChanged.AddListener(index =>
         {
-            Resolution selectedResolution = Screen.resolutions[index];
-            EventManager.TriggerResolutionChanged(selectedResolution.width, selectedResolution.height, fullscreenToggle.isOn);
+            SettingsManager.Instance.SaveResolution(
+                resolutions[index].width,
+                resolutions[index].height,
+                fullscreenToggle.isOn
+            );
         });
 
         qualityDropdown.onValueChanged.AddListener(index =>
         {
-            EventManager.TriggerQualityLevelChanged(index);
+            SettingsManager.Instance.SaveQualityLevel(index);
         });
-    }
 
-    public void TogglePause()
-    {
-        isPaused = !isPaused;
-
-        if (GameManager.Instance != null)
-        {
-            if (isPaused) GameManager.Instance.PauseGame();
-            else GameManager.Instance.ResumeGame();
-        }
-
-        ToggleOptionsMenuVisibility(isPaused);
-    }
-
-    private void ToggleOptionsMenuVisibility(bool isVisible)
-    {
-        gameObject.SetActive(isVisible);
-        // Ensure you find the Canvas only if needed to avoid overhead.
-        if (isVisible)
-        {
-            Canvas canvas = FindObjectOfType<Canvas>(); // Consider caching this reference.
-            if (canvas != null) canvas.gameObject.SetActive(isVisible);
-        }
     }
 
     /// <summary>
@@ -107,7 +110,7 @@ public class OptionsMenuUI : MonoBehaviour
     private void InitializeUIState()
     {
         LoadResolutions();
-      
+        ToggleOptionsMenuVisibility(false);
     }
 
     private void UpdateUIWithCurrentSettings()
@@ -115,47 +118,27 @@ public class OptionsMenuUI : MonoBehaviour
         // Ensure SettingsManager instance is available
         if (SettingsManager.Instance != null)
         {
-            // Update sliders with the values from SettingsManager
+            // Update sliders
             masterVolumeSlider.value = SettingsManager.Instance.MasterVolume;
             musicVolumeSlider.value = SettingsManager.Instance.MusicVolume;
             sfxVolumeSlider.value = SettingsManager.Instance.SfxVolume;
 
-            // Update fullscreen toggle
+            // Update toggle
             fullscreenToggle.isOn = SettingsManager.Instance.IsFullScreen;
-
-            // Ensure the resolutions array is populated before trying to access it
-            if (resolutions == null || resolutions.Length == 0)
-            {
-                Debug.LogWarning("Resolutions array is not initialized. Make sure it's populated before updating UI.");
-                LoadResolutions(); // Make sure this method populates the 'resolutions' array from Screen.resolutions
-            }
 
             // Update resolution dropdown - find the current resolution index
             int currentResolutionIndex = Array.FindIndex(resolutions, r => r.width == SettingsManager.Instance.GameResolution.width && r.height == SettingsManager.Instance.GameResolution.height);
-            if (currentResolutionIndex != -1) // Check if the current resolution was found in the array
-            {
-                resolutionDropdown.value = currentResolutionIndex;
-            }
-            else
-            {
-                Debug.LogWarning("Current resolution not found in resolutions array.");
-            }
+            resolutionDropwdon.value = resolutionDropwdon.value = currentResolutionIndex;
 
-            // Update quality dropdown
             qualityDropdown.value = SettingsManager.Instance.QualityLevel;
-
-            // Refresh dropdowns to display the current values
-            resolutionDropdown.RefreshShownValue();
-            qualityDropdown.RefreshShownValue();
         }
         else
         {
             Debug.LogWarning("SettingsManager instance not found. Make sure it's initialized before accessing it.");
         }
     }
- 
 
-
+    #endregion
 
     #region Menu Visibility Management
 
@@ -183,31 +166,31 @@ public class OptionsMenuUI : MonoBehaviour
     #endregion
 
 
-    //#region Event Subscriptions
-    ///// <summary>
-    ///// Subscribes to necessary events on the event bus.
-    ///// </summary>
-    //private void SubscribeToEvents()
-    //{
-    //    if (GameManager.Instance != null)
-    //    {
-    //        GameManager.Instance.Subscribe<ShowOptionsMenuEvent>(OnShowOptionsMenu);
-    //        GameManager.Instance.Subscribe<HideOptionsMenuEvent>(OnHideOptionsMenu);
-    //    }
-    //}
+    #region Event Subscriptions
+    /// <summary>
+    /// Subscribes to necessary events on the event bus.
+    /// </summary>
+    private void SubscribeToEvents()
+    {
+        if (EventBus.Instance != null)
+        {
+            EventBus.Instance.Subscribe<ShowOptionsMenuEvent>(OnShowOptionsMenu);
+            EventBus.Instance.Subscribe<HideOptionsMenuEvent>(OnHideOptionsMenu);
+        }
+    }
 
-    ///// <summary>
-    ///// Unsubscribes from events on the event bus.
-    ///// </summary>
-    //private void UnsubscribeFromEvents()
-    //{
-    //    if (GameManager.Instance != null)
-    //    {
-    //        GameManager.Instance.Unsubscribe<ShowOptionsMenuEvent>(OnShowOptionsMenu);
-    //        GameManager.Instance.Unsubscribe<HideOptionsMenuEvent>(OnHideOptionsMenu);
-    //    }
-    //}
-    //#endregion
+    /// <summary>
+    /// Unsubscribes from events on the event bus.
+    /// </summary>
+    private void UnsubscribeFromEvents()
+    {
+        if (EventBus.Instance != null)
+        {
+            EventBus.Instance.Unsubscribe<ShowOptionsMenuEvent>(OnShowOptionsMenu);
+            EventBus.Instance.Unsubscribe<HideOptionsMenuEvent>(OnHideOptionsMenu);
+        }
+    }
+    #endregion
 
     #region UI Methods
     /// <summary>
@@ -233,16 +216,19 @@ public class OptionsMenuUI : MonoBehaviour
                 currentResolutionIndex = i;
             }
         }
-        resolutionDropdown.ClearOptions();
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+        resolutionDropwdon.ClearOptions();
+        resolutionDropwdon.AddOptions(options);
+        resolutionDropwdon.value = currentResolutionIndex;
+        resolutionDropwdon.RefreshShownValue();
     }
 
     /// <summary>
     /// Toggles the visibility of the options menu UI.
     /// </summary>
     /// <param name="isVisible">Whether the options menu should be visible.</param>
-   
+    public void ToggleOptionsMenuVisibility(bool isVisible)
+    {
+        gameObject.SetActive(isVisible);
+    }
     #endregion
 }

@@ -21,25 +21,26 @@ public class SettingsManager : Singleton<SettingsManager>
     public override void Awake()
     {
         base.Awake();
-        EventManager.OnAudioSettingsChanged += SaveAndApplyAudioSettings;
-        EventManager.OnQualityLevelChanged += SaveQualityLevel;
-        EventManager.OnResolutionChanged += SaveResolution;
-        EventManager.OnFullscreenToggled += SaveIsFullScreen;
+        if (audioMixer == null)
+        {
+            audioMixer = Resources.Load<AudioMixer>("AudioMixer");
+        }
+        LoadAllSettings();
     }
 
-    private void OnDestroy()
+    /*
+    void OnEnable()
     {
-        EventManager.OnAudioSettingsChanged -= SaveAndApplyAudioSettings;
-        EventManager.OnQualityLevelChanged -= SaveQualityLevel;
-        EventManager.OnResolutionChanged -= SaveResolution;
-        EventManager.OnFullscreenToggled -= SaveIsFullScreen;
+        EventBus.Instance.Subscribe<AudioSettingsChangedEvent>(ApplyAudioSettings);
+        EventBus.Instance.Subscribe<ResolutionChangedEvent>(ApplyResolutionSettings);
     }
 
-    void SaveAndApplyAudioSettings(float master, float music, float sfx)
+    void OnDisable()
     {
-        SaveAudioSettings(master, music, sfx); // Existing method in SettingsManager
-        ApplySettings(); // Applies all settings, including audio
+        EventBus.Instance.Unsubscribe<AudioSettingsChangedEvent>(ApplyAudioSettings);
+        EventBus.Instance.Unsubscribe<ResolutionChangedEvent>(ApplyResolutionSettings);
     }
+    */
     #endregion
 
     #region Settings Loading and Saving
@@ -77,6 +78,9 @@ public class SettingsManager : Singleton<SettingsManager>
         PlayerPrefs.SetFloat("musicVolume", music);
         PlayerPrefs.SetFloat("sfxVolume", sfx);
         PlayerPrefs.Save();
+        MasterVolume = master;
+        MusicVolume = music;
+        SfxVolume = sfx;
         ApplySettings();
     }
 
@@ -120,6 +124,7 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         PlayerPrefs.SetInt("qualityLevel", qualityLevel);
         PlayerPrefs.Save();
+        QualityLevel = qualityLevel;
         ApplySettings();
     }
 

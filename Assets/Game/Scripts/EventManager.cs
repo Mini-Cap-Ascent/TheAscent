@@ -18,7 +18,11 @@ public static class EventManager
     public static event Action OnResumeGame;
 
     // Define trigger methods for each event
-    public static void TriggerAudioSettingsChanged(float master, float music, float sfx) => OnAudioSettingsChanged?.Invoke(master, music, sfx);
+    public static void TriggerAudioSettingsChanged(float master, float music, float sfx)
+    {
+        Debug.Log($"Audio settings changed: Master={master}, Music={music}, SFX={sfx}");
+        OnAudioSettingsChanged?.Invoke(master, music, sfx);
+    }
     public static void TriggerQualityLevelChanged(int qualityLevel) => OnQualityLevelChanged?.Invoke(qualityLevel);
     public static void TriggerResolutionChanged(int width, int height, bool fullscreen) => OnResolutionChanged?.Invoke(width, height, fullscreen);
     public static void TriggerFullscreenToggled(bool isFullscreen) => OnFullscreenToggled?.Invoke(isFullscreen);
