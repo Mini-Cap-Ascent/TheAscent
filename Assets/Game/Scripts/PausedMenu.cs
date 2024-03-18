@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+// Add this if GameEvents.cs is in a different namespace
+// using YourProjectNamespace.Events;
 
 public class PausedMenu : MonoBehaviour
 {
@@ -12,44 +11,28 @@ public class PausedMenu : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
+        EventBus.Instance.Subscribe<PauseGameEvent>(ShowPauseMenu);
+        EventBus.Instance.Subscribe<ResumeGameEvent>(HidePauseMenu);
     }
 
-    void Update()
+    void OnDestroy()
     {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    if (GameManager.Instance.IsPaused)
-        //    {
-        //        EventManager.TriggerResumeGame();
-        //    }
-        //    else
-        //    {
-        //        EventManager.TriggerPauseGame();
-        //    }
-        //}
+        EventBus.Instance.Unsubscribe<PauseGameEvent>(ShowPauseMenu);
+        EventBus.Instance.Unsubscribe<ResumeGameEvent>(HidePauseMenu);
     }
 
-    private void OnEnable()
+    public void ShowPauseMenu(object eventData)
     {
-        EventManager.OnPauseGame += ShowPauseMenu;
-        EventManager.OnResumeGame += HidePauseMenu;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.OnPauseGame -= ShowPauseMenu;
-        EventManager.OnResumeGame -= HidePauseMenu;
-    }
-
-    public void ShowPauseMenu()
-    {
+        Paused = true;
         PauseMenuCanvas.SetActive(true);
         GameManager.Instance.IsPaused = true;
         Time.timeScale = 0f;
     }
 
-    public void HidePauseMenu()
+
+    public void HidePauseMenu(object eventData)
     {
+        Paused = false;
         PauseMenuCanvas.SetActive(false);
         GameManager.Instance.IsPaused = false;
         Time.timeScale = 1f;
@@ -58,5 +41,15 @@ public class PausedMenu : MonoBehaviour
     public void MainMenuButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    public void HidePauseMenuWrapper()
+    {
+        HidePauseMenu(null); // Call the existing HidePauseMenu with null
+    }
+
+    public void ShowPauseMenuWrapper()
+    {
+        ShowPauseMenu(null);
     }
 }

@@ -41,6 +41,12 @@ public struct ResolutionChangedEvent
     public bool IsFullScreen; ///< Indicates whether the game should be in fullscreen mode.
 }
 
+public struct PauseGameEvent { }
+public struct ResumeGameEvent { }
+
+public struct PlayPressedEvent { }
+public struct ExitPressedEvent { }
+
 
 // Maybe we can bring the rest of the events to this file
 /*

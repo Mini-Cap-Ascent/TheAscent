@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private GameObject optionsMenu;
 
-    private void Awake()
+    private new void Awake()
     {
         if (Instance == null)
         {
@@ -37,18 +37,21 @@ public class GameManager : Singleton<GameManager>
     {
         _sessionStartTime = DateTime.Now;
         ChangeState(new MainMenuState(this));
-        
+
         Debug.Log($"Game session start at: {_sessionStartTime}");
-  
-        EventManager.OnPlayPressed += StartGame;
-        EventManager.OnExitPressed += EndGame;
+
+        EventBus.Instance.Subscribe<PlayPressedEvent>(e => StartGame());
+        EventBus.Instance.Subscribe<ExitPressedEvent>(e => EndGame());
+        EventBus.Instance.Subscribe<PauseGameEvent>(e => PauseGame());
+        EventBus.Instance.Subscribe<ResumeGameEvent>(e => ResumeGame());
     }
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
-        EventManager.OnPlayPressed -= StartGame;
-        EventManager.OnExitPressed -= EndGame;
-    
+        EventBus.Instance.Unsubscribe<PlayPressedEvent>(e => StartGame());
+        EventBus.Instance.Unsubscribe<ExitPressedEvent>(e => EndGame());
+        EventBus.Instance.Unsubscribe<PauseGameEvent>(e => PauseGame());
+        EventBus.Instance.Unsubscribe<ResumeGameEvent>(e => ResumeGame());
     }
 
     private void OnApplicationQuit()
@@ -115,17 +118,33 @@ public class GameManager : Singleton<GameManager>
 
     public void StartGame()
     {
+        // Start the game or transition to the gameplay scene
         ChangeState(new NextSceneState(this));
         OnGameStart?.Invoke();
-       
+        EventBus.Instance.Publish(new PlayPressedEvent()); // Publish the event
     }
 
     public void EndGame()
     {
+        // Exit the game or return to the main menu
         OnGameEnd?.Invoke();
         Application.Quit();
+        EventBus.Instance.Publish(new ExitPressedEvent()); // Publish the event
     }
 
+    public void PauseGame()
+    {
+        IsPaused = true;
+        Time.timeScale = 0f;
+        EventBus.Instance.Publish(new PauseGameEvent()); // Publish the event
+    }
+
+    public void ResumeGame()
+    {
+        IsPaused = false;
+        Time.timeScale = 1f;
+        EventBus.Instance.Publish(new ResumeGameEvent()); // Publish the event
+    }
     private void Update()
     {
         //currentState?.UpdateState();
@@ -138,30 +157,6 @@ public class GameManager : Singleton<GameManager>
         //{
         //    EndGame();
         //}
-    }
-
-    private void OnEnable()
-    {
-        EventManager.OnPauseGame += PauseGame;
-        EventManager.OnResumeGame += ResumeGame;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.OnPauseGame -= PauseGame;
-        EventManager.OnResumeGame -= ResumeGame;
-    }
-
-    public void PauseGame()
-    {
-        IsPaused = true;
-        Time.timeScale = 0f;
-    }
-
-    public void ResumeGame()
-    {
-        IsPaused = false;
-        Time.timeScale = 1f;
     }
 }
 
