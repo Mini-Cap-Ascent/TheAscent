@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Fusion;
 using Cinemachine;
+using UnityEngine.AddressableAssets;
 
 
 public class PlayerMovement : NetworkBehaviour
@@ -77,6 +78,7 @@ public class PlayerMovement : NetworkBehaviour
             orbitalTransposer.m_XAxis.Value = Mathf.Lerp(orbitalTransposer.m_XAxis.Value, targetRotationValue, Time.deltaTime * rotationSpeed);
         }
     }
+
 
     private void HandleJump()
     {
