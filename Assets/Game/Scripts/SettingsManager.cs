@@ -27,20 +27,6 @@ public class SettingsManager : Singleton<SettingsManager>
         }
         LoadAllSettings();
     }
-
-    /*
-    void OnEnable()
-    {
-        EventBus.Instance.Subscribe<AudioSettingsChangedEvent>(ApplyAudioSettings);
-        EventBus.Instance.Subscribe<ResolutionChangedEvent>(ApplyResolutionSettings);
-    }
-
-    void OnDisable()
-    {
-        EventBus.Instance.Unsubscribe<AudioSettingsChangedEvent>(ApplyAudioSettings);
-        EventBus.Instance.Unsubscribe<ResolutionChangedEvent>(ApplyResolutionSettings);
-    }
-    */
     #endregion
 
     #region Settings Loading and Saving

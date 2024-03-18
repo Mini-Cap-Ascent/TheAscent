@@ -9,7 +9,6 @@ public class MouseClickSpawner : MonoBehaviour
 
     void Update()
     {
-        // Check for left mouse button click
         if (Input.GetMouseButtonDown(0))
         {
             SpawnPrefabAtMousePosition();
@@ -26,18 +25,14 @@ public class MouseClickSpawner : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            // Calculate the spawn position for the human prefab
             Vector3 spawnPosition = hit.point;
-            spawnPosition.y += 1; // Adjust the height if necessary
+            spawnPosition.y += 1; 
 
-            // Instantiate the human prefab using the AssetManager
             AssetManager.Instance.Inst(humanPrefabReference, spawnPosition, Quaternion.identity,
                 (instGO) =>
                 {
                     if (instGO != null)
-                    {
-                        // Optional: Perform any initialization on the prefab here
-                    }
+                    { }
                 });
         }
     }
@@ -47,11 +42,9 @@ public class MouseClickSpawner : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            // Calculate the spawn position for the tree prefab
             Vector3 spawnPosition = hit.point;
-            spawnPosition.y += 1; // Adjust the height if necessary
+            spawnPosition.y += 1; 
 
-            // Load the tree prefab from the Resources folder
             GameObject treePrefab = Resources.Load<GameObject>("Tree");
             Instantiate(treePrefab, spawnPosition, Quaternion.identity);
         }

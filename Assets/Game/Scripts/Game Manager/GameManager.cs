@@ -65,11 +65,9 @@ public class GameManager : Singleton<GameManager>
     }
     public void ToggleOptionsMenu()
     {
-     
-        EventManager.TriggerShowOptionsMenu();
 
+        EventBus.Instance.Publish(new ShowOptionsMenuEvent());
 
-      
     }
 
     public void ChangeState(IGameState newState)
