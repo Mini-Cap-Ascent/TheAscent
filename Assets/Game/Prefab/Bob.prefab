@@ -116,8 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fedee8b79c1c54185522f705063d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  rotationSpeed: 5
+  moveSpeed: 2
+  rotationSpeed: 50
+  deadZone: 0.1
 --- !u!114 &835957501657261198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,10 +178,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -10
   jumpImpulse: 20
-  acceleration: 10
-  braking: 10
+  acceleration: 5
+  braking: 5
   maxSpeed: 2
-  rotationSpeed: 15
+  rotationSpeed: 50
 --- !u!82 &422991329931685523
 AudioSource:
   m_ObjectHideFlags: 0

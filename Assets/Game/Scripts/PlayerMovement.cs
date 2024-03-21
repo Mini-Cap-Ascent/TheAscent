@@ -5,12 +5,13 @@ using UnityEngine.Splines;
 using Fusion;
 using Cinemachine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.EventSystems;
 
 
 public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 5f;
-    public float rotationSpeed = 10f;
+    public float rotationSpeed = 50f;
     public float deadZone = 0.1f;
     private Animator animator;
 
@@ -31,21 +32,20 @@ public class PlayerMovement : NetworkBehaviour
             inputDirection = data.direction;
         }
 
-        if (inputDirection.sqrMagnitude > deadZone * deadZone)
+        if (Mathf.Abs(inputDirection.x) > deadZone)
         {
-            Vector3 worldDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
-            worldDirection = Camera.main.transform.TransformDirection(worldDirection);
-            worldDirection.y = 0;
-            worldDirection.Normalize();
+            float rotationAmount = inputDirection.x * rotationSpeed * Runner.DeltaTime;
+            transform.Rotate(0, rotationAmount, 0);
+        }
 
-            _cc.Move(moveSpeed * worldDirection * Runner.DeltaTime);
-
-            Quaternion targetRotation = Quaternion.LookRotation(worldDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Runner.DeltaTime);
-
+        if (Mathf.Abs(inputDirection.y) > deadZone)
+        {
+            Vector3 moveDirection = transform.forward * inputDirection.y; 
+            _cc.Move(moveSpeed * moveDirection * Runner.DeltaTime);
             // Set the animator "Speed" parameter
             animator.SetFloat("Speed", moveSpeed * inputDirection.magnitude);
-        } else
+        } 
+        else
         {
             animator.SetFloat("Speed", 0);
         }
