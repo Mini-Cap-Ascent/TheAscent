@@ -45,7 +45,8 @@ public class PlayerMovement : NetworkBehaviour
 
             // Set the animator "Speed" parameter
             animator.SetFloat("Speed", moveSpeed * inputDirection.magnitude);
-        } else
+        } 
+        else
         {
             animator.SetFloat("Speed", 0);
         }
