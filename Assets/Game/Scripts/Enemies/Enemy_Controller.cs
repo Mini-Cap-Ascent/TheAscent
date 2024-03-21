@@ -54,7 +54,7 @@ public class Enemy_Controller : MonoBehaviour
 
     public bool isAtDestination()
     {
-        Debug.Log($"Remaining Distance: {agent.remainingDistance}, Stopping Distance: {agent.stoppingDistance}, Path Pending: {agent.pathPending}");
+       // Debug.Log($"Remaining Distance: {agent.remainingDistance}, Stopping Distance: {agent.stoppingDistance}, Path Pending: {agent.pathPending}");
         return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     }
 
