@@ -117,7 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotationSpeed: 5
+  rotationSpeed: 50
+  deadZone: 0.1
 --- !u!114 &835957501657261198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,9 +178,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -10
   jumpImpulse: 20
-  acceleration: 10
+  acceleration: 5
   braking: 10
-  maxSpeed: 2
+  maxSpeed: 20
   rotationSpeed: 15
 --- !u!82 &422991329931685523
 AudioSource:
