@@ -38,13 +38,12 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
             if (Time.time >= nextAttackTime)
             {
                 nextAttackTime = Time.time + 1f / attackRate;
-                enemyAnimator.SetBool("isPlayerNear", true);
+                enemyAnimator.SetBool("IsPlayerNear", true);
             }
         }
         else
         {
-           enemyAnimator.SetBool("isPlayerNear", false);
-            fsm.ChangeState(fsm.PatrolStateName);
+           enemyAnimator.SetBool("IsPlayerNear", false);
             ChasePlayer();
         }
     

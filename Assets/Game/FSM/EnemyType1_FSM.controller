@@ -1,5 +1,31 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8285618684663172874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59f22490fccbc342a30ce73e1ce2489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 5317545712302831475, guid: ac60b79dd63199f4391691cc3f5686c0, type: 3}
+  canSeePlayer: 0
+  chaseDistance: 10
+  health: 100
+  criticalHealthThreshold: 95
+  detectionRange: 45.14
+  fieldOfViewAngle: 110
+  distanceToPlayer: 50
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 64
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1102 &-6355686171879553529
 AnimatorState:
   serializedVersion: 6
@@ -44,32 +70,15 @@ MonoBehaviour:
   chaseDistance: 10
   attackDistance: 2
   attackRate: 1
---- !u!114 &-3954990629676945419
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c59f22490fccbc342a30ce73e1ce2489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 5317545712302831475, guid: ac60b79dd63199f4391691cc3f5686c0, type: 3}
-  canSeePlayer: 1
-  chaseDistance: 10
-  health: 100
-  criticalHealthThreshold: 95
   detectionRange: 20
   fieldOfViewAngle: 110
   distanceToPlayer: 30
   targetMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -158,7 +167,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
-  - {fileID: -3954990629676945419}
+  - {fileID: -8285618684663172874}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

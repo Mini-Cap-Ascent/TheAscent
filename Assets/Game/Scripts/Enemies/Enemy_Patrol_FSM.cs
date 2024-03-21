@@ -67,63 +67,83 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Random.InitState(System.DateTime.Now.Millisecond);
-        float randomIndex = Random.Range(0.5f, 1);
+        DetectPlayer();
+
+        // Movement and animation logic as before
         if (enemy.agent.remainingDistance > 0)
         {
-
-            enemyAnimator.SetFloat("Speed", 0.75f);
-
-
+            enemyAnimator.SetFloat("Speed", 0.75f); // Assuming 'animator' is correctly referencing the enemy's Animator component
         }
         else
         {
-
             enemyAnimator.SetFloat("Speed", 0);
-
-
-        }
-        bool playerInSight = false;
-        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
-        if (Vector3.Angle(enemy.transform.forward, directionToPlayer) < fieldOfViewAngle / 2)
-        {
-            float distanceToPlayer = Vector3.Distance(enemy.transform.position, player.position);
-            if (!Physics.Raycast(enemy.transform.position, directionToPlayer, distanceToPlayer, obstacleMask))
-            {
-                playerInSight = true;
-            }
         }
 
-        // Use playerInSight variable to decide whether to chase the player or not
-        if (playerInSight && distanceToPlayer <= detectionRange)
-        {
-            canSeePlayer = true;
-        }
-        else
-        {
-            canSeePlayer = false;
-        }
-
+        // Transition logic based on player detection
         if (canSeePlayer)
         {
             // Chase the player
-           enemy.agent.SetDestination(player.position);
+            enemy.agent.SetDestination(player.position);
             enemyAnimator.SetFloat("Speed", 1);
             fsm.ChangeState(fsm.EnemyFoundStateName);
         }
-        else
+        else if (enemy.isAtDestination())
         {
             // Continue patrolling
-            if (enemy.isAtDestination())
-            {
-                enemy.MoveToNextWayPoint();
-            }
-        }
-        if (IsCriticallyInjured()) // This method needs to be implemented in Enemy_Controller
-        {
-            fsm.ChangeState(fsm.DeathStateName); // Example, change to a hurt state
+            enemy.MoveToNextWayPoint();
         }
 
+        // Check for critical injury
+        if (IsCriticallyInjured())
+        {
+            fsm.ChangeState(fsm.DeathStateName); // Change to appropriate state
+        }
+
+    }
+
+    private void DetectPlayer()
+    {
+        // Assume we have a reference to the player's CharacterController component
+        CharacterController playerCharacterController = player.GetComponent<CharacterController>();
+
+        // Now we use the actual dimensions from the player's CharacterController
+        float characterControllerHeight = playerCharacterController.height;
+        float characterControllerRadius = playerCharacterController.radius;
+
+        // Calculate the detection origin based on the enemy's assumed eye level
+        float eyeLevel = 1.8f; // Adjust this value to the enemy's eye level
+        Vector3 detectionOrigin = enemy.transform.position + Vector3.up * eyeLevel;
+
+        // Calculate the direction to the player from the detection origin
+        Vector3 directionToPlayer = (player.position - detectionOrigin).normalized;
+        float distanceToPlayer = Vector3.Distance(detectionOrigin, player.position);
+
+        // Debugging: draw the detection ray and capsule
+        Debug.DrawRay(detectionOrigin, directionToPlayer * detectionRange, Color.green);
+
+        // Calculate the points for the CapsuleCast
+        Vector3 capsuleBottom = detectionOrigin;
+        Vector3 capsuleTop = capsuleBottom + Vector3.up * (characterControllerHeight - characterControllerRadius * 2);
+
+        // Debugging: draw the capsule
+        Debug.DrawLine(capsuleBottom, capsuleTop, Color.red);
+        Debug.Log("We Made it");
+
+        RaycastHit hit;
+        // Perform the CapsuleCast
+        if (Physics.CapsuleCast(capsuleBottom, capsuleTop, characterControllerRadius, directionToPlayer, out hit, detectionRange, targetMask))
+        {
+            Debug.Log("Collision detected!");
+            // We hit something on the "Player" layer
+            if (hit.collider.GetComponent<CharacterController>() != null)
+            {
+                canSeePlayer = true;
+                return;
+            }
+        }
+
+        // If no hit, the player is not in sight
+        canSeePlayer = false;
     }
     public bool IsCriticallyInjured()
     {
@@ -133,7 +153,9 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
-        animationListener.OnAnimatorMoveEvent -= OnAnimatorMove;
+   
+
+
     }
     public void TakeDamage(float damage)
     {
