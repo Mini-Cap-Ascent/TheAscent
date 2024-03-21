@@ -11,6 +11,7 @@ public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
+    public float deadZone = 0.1f;
     private Animator animator;
 
     private NetworkCharacterController _cc;
@@ -23,29 +24,30 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        Vector2 inputDirection = Vector2.zero;
+
         if (GetInput(out NetworkInputData data))
         {
-            Vector2 inputDirection = data.direction;
-            if (inputDirection != Vector2.zero)
-            {
-                Vector3 worldDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
-                worldDirection = Camera.main.transform.TransformDirection(worldDirection);
-                worldDirection.y = 0;
-                worldDirection.Normalize();
+            inputDirection = data.direction;
+        }
 
-                _cc.Move(moveSpeed * worldDirection * Runner.DeltaTime);
+        if (inputDirection.sqrMagnitude > deadZone * deadZone)
+        {
+            Vector3 worldDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+            worldDirection = Camera.main.transform.TransformDirection(worldDirection);
+            worldDirection.y = 0;
+            worldDirection.Normalize();
 
-                Quaternion targetRotation = Quaternion.LookRotation(worldDirection);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Runner.DeltaTime);
+            _cc.Move(moveSpeed * worldDirection * Runner.DeltaTime);
 
-                // Set the animator "Speed" parameter
-                animator.SetFloat("Speed", moveSpeed * inputDirection.magnitude);
-            }
-            else
-            {
-                // Make sure to set "Speed" to 0 if there's no input
-                animator.SetFloat("Speed", 0);
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(worldDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Runner.DeltaTime);
+
+            // Set the animator "Speed" parameter
+            animator.SetFloat("Speed", moveSpeed * inputDirection.magnitude);
+        } else
+        {
+            animator.SetFloat("Speed", 0);
         }
     }
 

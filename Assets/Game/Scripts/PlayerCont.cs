@@ -127,7 +127,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""2903fcc9-a43d-451e-913d-0b5246e60926"",
-                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/z"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/rz"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
