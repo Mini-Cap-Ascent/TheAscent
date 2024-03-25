@@ -68,17 +68,10 @@ MonoBehaviour:
   player: {fileID: 5317545712302831475, guid: ac60b79dd63199f4391691cc3f5686c0, type: 3}
   canSeePlayer: 1
   chaseDistance: 10
-  attackDistance: 2
+  attackDistance: 13
   attackRate: 1
-  detectionRange: 20
-  fieldOfViewAngle: 110
-  distanceToPlayer: 30
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 0
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
+  projectilePrefab: {fileID: 4456046066963683295, guid: a8ce7ea753338554da6e741cf54142e1, type: 3}
+  launchForce: 10
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0

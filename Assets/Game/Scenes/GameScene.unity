@@ -8953,6 +8953,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1207975219}
     - target: {fileID: 1746089199164539728, guid: 332162d7d14165943ad3237746249f8e, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 5317545712302831475, guid: ac60b79dd63199f4391691cc3f5686c0, type: 3}
+    - target: {fileID: 1746089199164539728, guid: 332162d7d14165943ad3237746249f8e, type: 3}
       propertyPath: WaypointParents
       value: 
       objectReference: {fileID: 642429128}
