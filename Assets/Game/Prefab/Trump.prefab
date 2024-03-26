@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4089427035980382887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6491082354467243619}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6491082354467243619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089427035980382887}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 1.313, z: 1.092}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3725054205418107737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3762955869813740722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64,13 +95,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trump
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 533ee1d17be3f3e4dbae3ca1fc23d539, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6491082354467243619}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       insertIndex: -1
@@ -81,7 +119,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6719279012180144037}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4656316460205115967}
   m_SourcePrefab: {fileID: 100100000, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+--- !u!4 &3725054205418107737 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
+  m_PrefabInstance: {fileID: 3762955869813740722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4105556338366818787 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
@@ -121,8 +167,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566b70e80f8c9954497cfbadb2c112dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 7300935075082316067}
+  target: {fileID: 0}
   WaypointParents: {fileID: 0}
+  distanceToWaypoint: 0.5
+  angularDampeningTime: 5
+  deadZone: 10
+  sightDistance: 10
+  cheerTime: 5
+  fov: 70
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
   Waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -131,8 +189,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  currentWaypoint: 0
   agent: {fileID: 3976275480427674918}
+  currentWaypoint: 0
   health: 100
   fsm: {fileID: 6719279012180144037}
   drawPath: 0
@@ -149,8 +207,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FSMController: {fileID: 9100000, guid: 33c1ad5f2d8d73f41bfe535586c43249, type: 2}
---- !u!95 &7300935075082316067 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 859b109cc362d5e408510a2ff66e32a6, type: 3}
-  m_PrefabInstance: {fileID: 3762955869813740722}
+--- !u!114 &-4656316460205115967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105556338366818787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06681eb1054c8e4498d88d0633a7422a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 4456046066963683295, guid: a8ce7ea753338554da6e741cf54142e1, type: 3}

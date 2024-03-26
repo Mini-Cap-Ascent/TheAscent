@@ -17,6 +17,7 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
     public float detectionRange = 20f;
     public float fieldOfViewAngle = 110f; 
     public float distanceToPlayer = 30f;
+    private bool isDying = false;
 
     // Angle for field of view
     public LayerMask targetMask; // Layer on which the player is located
@@ -45,8 +46,13 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        Health health = enemy.GetComponent<Health>();
+        if (health != null)
+        {
+            health.onDied.AddListener(Die);
+            health.onTakeDamage.AddListener(health => TakeDamage()); // Assuming TakeDamage is adapted to not need parameters or uses a different method for handling
+        }
 
-      
 
         if (enemy.agent.remainingDistance>0)
         {
@@ -83,8 +89,7 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
         if (canSeePlayer)
         {
             // Chase the player
-            enemy.agent.SetDestination(player.position);
-            enemyAnimator.SetFloat("Speed", 1);
+           
             fsm.ChangeState(fsm.EnemyFoundStateName);
         }
         else if (enemy.isAtDestination())
@@ -106,22 +111,23 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
         // Assume we have a reference to the player's CharacterController component
         CharacterController playerCharacterController = player.GetComponent<CharacterController>();
 
-        // Now we use the actual dimensions from the player's CharacterController
         float characterControllerHeight = playerCharacterController.height;
         float characterControllerRadius = playerCharacterController.radius;
 
-        // Calculate the detection origin based on the enemy's assumed eye level
-        float eyeLevel = 1.8f; // Adjust this value to the enemy's eye level
+        // Adjust this value to the enemy's eye level
+        float eyeLevel = 1.8f;
         Vector3 detectionOrigin = enemy.transform.position + Vector3.up * eyeLevel;
 
-        // Calculate the direction to the player from the detection origin
+        // Offset in front of the enemy; adjust the value as needed
+        float frontOffset = 8.0f; // 1 meter in front of the enemy, adjust this value as necessary
+        detectionOrigin += enemy.transform.forward * frontOffset; // Apply the offset here
+
         Vector3 directionToPlayer = (player.position - detectionOrigin).normalized;
         float distanceToPlayer = Vector3.Distance(detectionOrigin, player.position);
 
         // Debugging: draw the detection ray and capsule
         Debug.DrawRay(detectionOrigin, directionToPlayer * detectionRange, Color.green);
 
-        // Calculate the points for the CapsuleCast
         Vector3 capsuleBottom = detectionOrigin;
         Vector3 capsuleTop = capsuleBottom + Vector3.up * (characterControllerHeight - characterControllerRadius * 2);
 
@@ -130,11 +136,9 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
         Debug.Log("We Made it");
 
         RaycastHit hit;
-        // Perform the CapsuleCast
         if (Physics.CapsuleCast(capsuleBottom, capsuleTop, characterControllerRadius, directionToPlayer, out hit, detectionRange, targetMask))
         {
             Debug.Log("Collision detected!");
-            // We hit something on the "Player" layer
             if (hit.collider.GetComponent<CharacterController>() != null)
             {
                 canSeePlayer = true;
@@ -142,7 +146,6 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
             }
         }
 
-        // If no hit, the player is not in sight
         canSeePlayer = false;
     }
     public bool IsCriticallyInjured()
@@ -157,25 +160,23 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
 
 
     }
-    public void TakeDamage(float damage)
+
+    public void TakeDamage()
     {
-        health -= damage;
-        if (health <= 0f)
-        {
-            Die(); // Handle death, possibly change state
-        }
-        else
-        {
-            // Optionally trigger a reaction, like a hurt animation
-            ; // Assuming fsm is accessible and this is your hurt state name
-        }
+        // Trigger any damage animations or effects
+        enemyAnimator.SetTrigger("Hurt");
     }
-
-
 
     public void Die()
     {
-        fsm.ChangeState(fsm.DeathStateName);
-
+        // Ensure this only triggers once if health reaches 0 multiple times before the GameObject is destroyed or disabled
+        if (!isDying)
+        {
+            isDying = true; // Prevent multiple death triggers
+            enemyAnimator.SetTrigger("Die");
+            fsm.ChangeState(fsm.DeathStateName);
+            // Additional cleanup or gameplay logic here
+        }
     }
+
 }

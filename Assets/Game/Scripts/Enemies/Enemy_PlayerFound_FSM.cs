@@ -12,39 +12,44 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
     public float attackDistance = 2f;
     public float attackRate = 1f;
     private float nextAttackTime = 0f;
-  
+    public GameObject projectilePrefab;
+    public float launchForce = 10f;
+    private FireBall_Attack fireBallAttack;
+
     public override void Init(GameObject _owner, FSM _fsm)
     {
         base.Init(_owner, _fsm);
         enemy = owner.GetComponent<Enemy_Controller>();
         animationListener = owner.GetComponent<AnimationListener>();
+        player = owner.GetComponent<Transform>();
+        fireBallAttack = owner.GetComponent<FireBall_Attack>();
+  
     }
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.agent.speed = 3.5f;
-        enemy.agent.stoppingDistance = attackDistance;
-        enemy.agent.autoBraking = true;
-        enemy.agent.acceleration = 8f;
-        enemy.agent.angularSpeed = 500f;
-        enemy.agent.SetDestination(player.position);
-        enemy.agent.isStopped = false;
-        enemyAnimator.SetFloat("Speed", 1);
+        
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        ChasePlayer();
+        enemyAnimator.SetFloat("Speed", 1);
+
         if (Vector3.Distance(owner.transform.position, player.position) <= attackDistance)
         {
             if (Time.time >= nextAttackTime)
             {
                 nextAttackTime = Time.time + 1f / attackRate;
                 enemyAnimator.SetBool("IsPlayerNear", true);
+                ShootProjectileAtPlayer();
             }
         }
         else
         {
            enemyAnimator.SetBool("IsPlayerNear", false);
-            ChasePlayer();
+            
         }
     
 
@@ -60,9 +65,16 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
 
     private void ChasePlayer()
     {
-        if (enemy.agent.enabled)
+        if (enemy.agent.enabled && player != null)
         {
             enemy.agent.SetDestination(player.position);
+        }
+    }
+    void ShootProjectileAtPlayer()
+    {
+        if (fireBallAttack != null)
+        {
+            fireBallAttack.FireProjectile();
         }
     }
 
