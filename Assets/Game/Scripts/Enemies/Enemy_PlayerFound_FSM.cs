@@ -14,6 +14,7 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
     private float nextAttackTime = 0f;
     public GameObject projectilePrefab;
     public float launchForce = 10f;
+    private FireBall_Attack fireBallAttack;
 
     public override void Init(GameObject _owner, FSM _fsm)
     {
@@ -21,6 +22,7 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
         enemy = owner.GetComponent<Enemy_Controller>();
         animationListener = owner.GetComponent<AnimationListener>();
         player = owner.GetComponent<Transform>();
+        fireBallAttack = owner.GetComponent<FireBall_Attack>();
   
     }
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -70,25 +72,9 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
     }
     void ShootProjectileAtPlayer()
     {
-        if (projectilePrefab != null && player != null)
+        if (fireBallAttack != null)
         {
-            // Instantiate the projectile
-            GameObject projectile = Instantiate(projectilePrefab, owner.transform.position, Quaternion.identity);
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-
-            // Calculate direction towards the player
-            Vector3 direction = (player.position - owner.transform.position).normalized;
-
-            // Optional: Adjust the spawn position or add an offset so the projectile doesn't collide with the enemy immediately upon instantiation
-
-            // Launch the projectile
-            if (rb != null)
-            {
-                rb.AddForce(direction * launchForce, ForceMode.VelocityChange); // You need to define launchForce, or directly use a value here
-            }
-
-            // Optional: Destroy the projectile after a certain time to avoid cluttering the scene
-            Destroy(projectile, 5f); // Adjust the time as needed
+            fireBallAttack.FireProjectile();
         }
     }
 

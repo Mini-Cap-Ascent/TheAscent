@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 595505167513858173}
   - component: {fileID: 3970136749629157103}
   - component: {fileID: 422991329931685523}
+  - component: {fileID: -2883458761145930013}
   m_Layer: 6
   m_Name: Bob
   m_TagString: Player
@@ -138,6 +139,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 2742812583776406429}
   - {fileID: 3970136749629157103}
+  - {fileID: -2883458761145930013}
 --- !u!143 &595505167513858173
 CharacterController:
   m_ObjectHideFlags: 0
@@ -278,6 +280,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2883458761145930013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55247069975331754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a5801cbe20aa6c4ab564dd1fd97eec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &211885928674471785
 GameObject:
   m_ObjectHideFlags: 0
