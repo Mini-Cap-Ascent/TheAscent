@@ -51,6 +51,16 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("BigBall"))
+        {
+            GetComponent<NetworkDamageRef>().TakeDamageRPC(10, collision.collider.GetComponent<NetworkObject>());
+
+            animator.SetTrigger("Hit");
+
+        }
+    }
 
     //private void HandleJump()
     //{
