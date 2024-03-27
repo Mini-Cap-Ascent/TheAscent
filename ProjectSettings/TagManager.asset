@@ -8,6 +8,7 @@ TagManager:
   - Collide
   - Waypoint
   - Enemy
+  - BigBall
   layers:
   - Default
   - TransparentFX
