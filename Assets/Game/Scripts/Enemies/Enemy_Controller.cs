@@ -77,13 +77,15 @@ public class Enemy_Controller : MonoBehaviour
 
         if (Waypoints.Count == 0)
         {
-            Debug.LogError("No Waypoints assigned");
+            Debug.LogError("No waypoints assigned.");
             return;
         }
 
-        currentWaypoint = (currentWaypoint + 1) % Waypoints.Count;
         GameObject nextWaypoint = Waypoints[currentWaypoint];
         agent.SetDestination(nextWaypoint.transform.position);
+
+        // Increment the waypoint index, wrapping back to 0 if it exceeds the list count
+        currentWaypoint = (currentWaypoint + 1) % Waypoints.Count;
 
     }
 
