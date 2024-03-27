@@ -78,7 +78,7 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
         // Movement and animation logic as before
         if (enemy.agent.remainingDistance > 0)
         {
-            enemyAnimator.SetFloat("Speed", 0.75f); // Assuming 'animator' is correctly referencing the enemy's Animator component
+            enemyAnimator.SetFloat("Speed", 1f); // Assuming 'animator' is correctly referencing the enemy's Animator component
         }
         else
         {
