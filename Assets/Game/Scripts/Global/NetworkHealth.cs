@@ -44,16 +44,19 @@ public class NetworkHealth : NetworkBehaviour
 
     private IEnumerator Die()
     {
-        // Trigger the death animation
         animator.SetTrigger("Die");
 
-        // Wait for the death animation to finish
-        // Adjust the time according to the length of your animation
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(5.0f); // Adjust time for your death animation
 
-        // After the animation is done, despawn the object
         if (Object.HasStateAuthority)
         {
+            // Check if the DeathMenu script is on the same GameObject, otherwise find it.
+            DeathMenu deathMenu = FindObjectOfType<DeathMenu>(); // Find it in the scene; consider caching it for efficiency.
+            if (deathMenu != null)
+            {
+                EventBus.Instance.Publish(new DeathEvent());
+            }
+
             Runner.Despawn(Object);
         }
     }

@@ -44,6 +44,8 @@ public struct ResolutionChangedEvent
 public struct PauseGameEvent { }
 public struct ResumeGameEvent { }
 
+public struct DeathEvent { }
+
 public struct PlayPressedEvent { }
 public struct ExitPressedEvent { }
 
