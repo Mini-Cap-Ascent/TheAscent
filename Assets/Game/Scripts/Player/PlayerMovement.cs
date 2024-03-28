@@ -14,17 +14,25 @@ public class PlayerMovement : NetworkBehaviour
     public float rotationSpeed = 50f;
     public float deadZone = 0.1f;
     private Animator animator;
+    private bool canMove = true;
 
     private NetworkCharacterController _cc;
+    private NetworkHealth healthComponent;
+    private NetworkObject networkObject;
 
     private void Awake()
     {
         _cc = GetComponent<NetworkCharacterController>();
         animator = GetComponent<Animator>();
+        healthComponent = GetComponent<NetworkHealth>();
+        networkObject = GetComponent<NetworkObject>();
     }
 
     public override void FixedUpdateNetwork()
     {
+
+        if(!canMove) return;
+
         Vector2 inputDirection = Vector2.zero;
 
         if (GetInput(out NetworkInputData data))
@@ -51,14 +59,40 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    public void LockMovement(float lockDuration) {
+
+        if (networkObject.HasStateAuthority)
+        {
+            canMove = false;
+            StartCoroutine(UnlockMovement(lockDuration));
+        }
+
+    
+    }
+
+    private IEnumerator UnlockMovement(float lockDuration)
+    {
+        yield return new WaitForSeconds(lockDuration);
+        canMove = true;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("BigBall"))
         {
-            GetComponent<NetworkDamageRef>().TakeDamageRPC(10, collision.collider.GetComponent<NetworkObject>());
+            // Check for authority
+            if (networkObject.HasStateAuthority)
+            {
+                // Directly call TakeDamage on the healthComponent
+                healthComponent?.TakeDamage(20, collision.collider.gameObject);
 
-            animator.SetTrigger("Hit");
-
+                // Trigger the hit animation
+                if (animator != null)
+                {
+                    animator.SetTrigger("Hit");
+                    LockMovement(2.0f); // Lock movement for 2 seconds, for example
+                }
+            }
         }
     }
 
