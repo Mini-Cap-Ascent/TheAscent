@@ -7,8 +7,14 @@ public class NetworkProjectile : NetworkBehaviour
 {
     public float speed = 10f; // Speed of the projectile
     public int damage = 50; // Damage the projectile can inflict
-
+    private NetworkObject networkObject;
     // Update is called once per frame
+
+    private void Awake()
+    {
+        // Initialize network-related components and other necessary references here
+        networkObject = GetComponent<NetworkObject>();
+    }
     void Update()
     {
         // Move the projectile forward
@@ -18,23 +24,20 @@ public class NetworkProjectile : NetworkBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the object we collided with has a Health component
-        Health health = collision.gameObject.GetComponent<Health>();
+        NetworkHealth healthComponent = collision.gameObject.GetComponent<NetworkHealth>();
 
-        if (health != null)
+        if (healthComponent != null)
         {
-            // Apply damage to the object
-            if (Object.HasStateAuthority && gameObject.CompareTag("Player"))
+            // Check if this projectile has the authority to apply damage
+            if (networkObject.HasStateAuthority)
             {
-                var damageReceiver = gameObject.GetComponent<NetworkDamageRef>();
-                if (damageReceiver != null)
-                {
-                    damageReceiver.TakeDamageRPC(damage, Object);
-                }
+                // Directly apply damage to the health component
+                healthComponent.TakeDamage(damage, collision.collider.gameObject);
+
+                // Optionally destroy the projectile on collision
+                Destroy(gameObject);
             }
         }
-
-        // Optionally destroy the projectile on collision
-        Destroy(gameObject);
     }
 }
     // Start is called before the first frame update

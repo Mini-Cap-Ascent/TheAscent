@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class NetworkDamageRef : NetworkBehaviour
 {
-    private Health healthComponent;
+    private NetworkHealth healthComponent;
 
     private void Awake()
     {
-        healthComponent = GetComponent<Health>();
+        healthComponent = GetComponent<NetworkHealth>();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
