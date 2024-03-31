@@ -16,6 +16,7 @@ public class PlayerMovement : NetworkBehaviour
     private Animator animator;
     private bool canMove = true;
 
+
     private NetworkCharacterController _cc;
     private NetworkHealth healthComponent;
     private NetworkObject networkObject;
@@ -27,7 +28,24 @@ public class PlayerMovement : NetworkBehaviour
         healthComponent = GetComponent<NetworkHealth>();
         networkObject = GetComponent<NetworkObject>();
     }
+    //private void Update()
+    //{
+    //    // Since we're using Update to check for input, it's okay to not use FixedUpdateNetwork.
+    //    // However, we should check for input authority.
+    //    if (!networkObject.HasInputAuthority) return;
 
+    //    // Handle jump input
+    //    if (Input.GetButtonDown("Jump"))
+    //    {
+    //        HandleJumpInput();
+    //    }
+    //}
+
+    private void HandleJumpInput()
+    {
+        _cc.RequestJump();
+
+    }
     public override void FixedUpdateNetwork()
     {
 
@@ -57,6 +75,13 @@ public class PlayerMovement : NetworkBehaviour
         {
             animator.SetFloat("Speed", 0);
         }
+        if (data.jumpPressed)
+        {
+            _cc.RequestJump();
+            
+            animator.SetTrigger("IsJumping");
+        }
+        HandleAttackInput();
     }
 
     public void LockMovement(float lockDuration) {
@@ -96,53 +121,46 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    //private void HandleJump()
-    //{
-    //    if (wantToJump && !isJumping)
-    //    {
-    //        StartJump();
-    //    }
-    //    else if (isJumping)
-    //    {
-    //        ContinueJump();
-    //    }
-    //}
+    private void HandleAttackInput()
+    {
+        if (!networkObject.HasInputAuthority) return; // Only handle input if we have the authority
 
-    //private void StartJump()
-    //{
-    //    animator.SetTrigger("IsJumping");
-    //    jumpStartTime = Time.time;
-    //    isJumping = true;
-    //    wantToJump = false;
-    //}
+        // Check for attack input
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            // Determine if we're moving
+            bool isMoving = _cc.Velocity.magnitude > 0;
+            if (isMoving)
+            {
+                _cc.MovingAttack();
+            }
+            else
+            {
+                _cc.IdleAttack();
+            }
+        }
+    }
+    public void ActivateJumpBoost(float boostMultiplier, float duration)
+    {
+        StartCoroutine(JumpBoostRoutine(boostMultiplier, duration));
+    }
 
-    //void OnCollisionEnter(Collision collision)
-    //{
-    //    Enemy_Patrol_FSM enemy = collision.collider.GetComponent<Enemy_Patrol_FSM>();
-    //    if (enemy != null)
-    //    {
-    //        enemy.TakeDamage(10f); // Deals 10 damage
-    //    }
-    //}
-    //private void ContinueJump()
-    //{
-    //    float elapsedTime = Time.time - jumpStartTime;
-    //    if (elapsedTime < jumpDuration)
-    //    {
-    //        float height = (-4 * jumpHeight / (jumpDuration * jumpDuration)) * (elapsedTime * elapsedTime - jumpDuration * elapsedTime);
-    //        Vector3 newPosition = _cc.transform.position + Vector3.up * height * Time.deltaTime;
-    //        _cc.Move(newPosition - _cc.transform.position);
-    //    }
-    //    else
-    //    {
-    //        isJumping = false; // End jump
-    //    }
-    //}
+    private IEnumerator JumpBoostRoutine(float boostMultiplier, float duration)
+    {
+        if (_cc != null)
+        {
+            _cc.jumpImpulse *= boostMultiplier; // Increase the jump impulse
+        }
 
-    //public void OnJumpInput()
-    //{
-    //    if (!_cc.Grounded) return;
-    //    wantToJump = true;
-    //}
+        yield return new WaitForSeconds(duration); // Wait for the duration of the power-up
+
+        if (_cc != null)
+        {
+            _cc.jumpImpulse /= boostMultiplier; // Reset the jump impulse
+        }
+    }
+
+  
 }
+
 

@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.AI;
 
 public class Enemy_Patrol_FSM : Enemy_BaseState
 {
-
+    private Transform enemyTransform;
     private Enemy_Controller enemy;
     private AnimationListener animationListener;
     private GameObject[] Waypoints;
@@ -15,7 +16,7 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
     public float health = 100f;
     public float criticalHealthThreshold = 95f;
     public float detectionRange = 20f;
-    public float fieldOfViewAngle = 110f; 
+    public float fieldOfViewAngle = 360f; 
     public float distanceToPlayer = 30f;
     private bool isDying = false;
 
@@ -31,6 +32,7 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
         Waypoints = enemy.Waypoints.ToArray();
         Waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
         animationListener = owner.GetComponent<AnimationListener>();
+        enemyTransform = owner.transform;
 
 
       
@@ -46,13 +48,6 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Health health = enemy.GetComponent<Health>();
-        if (health != null)
-        {
-            health.onDied.AddListener(Die);
-            health.onTakeDamage.AddListener(health => TakeDamage()); // Assuming TakeDamage is adapted to not need parameters or uses a different method for handling
-        }
-
 
         if (enemy.agent.remainingDistance>0)
         {
@@ -98,60 +93,57 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
             enemy.MoveToNextWayPoint();
         }
 
+        CheckHealth();
         // Check for critical injury
-        if (IsCriticallyInjured())
-        {
-            fsm.ChangeState(fsm.DeathStateName); // Change to appropriate state
-        }
+        
+        
 
     }
 
     private void DetectPlayer()
     {
-        // Assume we have a reference to the player's CharacterController component
-        CharacterController playerCharacterController = player.GetComponent<CharacterController>();
+        float eyeLevel = 1.8f; // The enemy's eye level above the ground.
+        float forwardOffset = 8.0f; // Forward offset from the enemy's center to start detection.
 
-        float characterControllerHeight = playerCharacterController.height;
-        float characterControllerRadius = playerCharacterController.radius;
+        // Calculate the detection origin point with eye level and forward offset.
+        Vector3 detectionOrigin = enemy.transform.position + Vector3.up * eyeLevel + enemy.transform.forward * forwardOffset;
 
-        // Adjust this value to the enemy's eye level
-        float eyeLevel = 1.8f;
-        Vector3 detectionOrigin = enemy.transform.position + Vector3.up * eyeLevel;
+        // Detect all colliders within the detection range from the detection origin.
+        Collider[] detectedColliders = Physics.OverlapSphere(detectionOrigin, detectionRange, targetMask);
 
-        // Offset in front of the enemy; adjust the value as needed
-        float frontOffset = 8.0f; // 1 meter in front of the enemy, adjust this value as necessary
-        detectionOrigin += enemy.transform.forward * frontOffset; // Apply the offset here
-
-        Vector3 directionToPlayer = (player.position - detectionOrigin).normalized;
-        float distanceToPlayer = Vector3.Distance(detectionOrigin, player.position);
-
-        // Debugging: draw the detection ray and capsule
-        Debug.DrawRay(detectionOrigin, directionToPlayer * detectionRange, Color.green);
-
-        Vector3 capsuleBottom = detectionOrigin;
-        Vector3 capsuleTop = capsuleBottom + Vector3.up * (characterControllerHeight - characterControllerRadius * 2);
-
-        // Debugging: draw the capsule
-        Debug.DrawLine(capsuleBottom, capsuleTop, Color.red);
-        Debug.Log("We Made it");
-
-        RaycastHit hit;
-        if (Physics.CapsuleCast(capsuleBottom, capsuleTop, characterControllerRadius, directionToPlayer, out hit, detectionRange, targetMask))
+        canSeePlayer = false; // Reset the detection flag.
+        foreach (Collider collider in detectedColliders)
         {
-            Debug.Log("Collision detected!");
-            if (hit.collider.GetComponent<CharacterController>() != null)
+            if (collider.CompareTag("Player")) // Make sure the player has the "Player" tag.
             {
-                canSeePlayer = true;
-                return;
+                // Perform a raycast to check for a clear line of sight to the collider.
+                if (Physics.Raycast(detectionOrigin, (collider.transform.position - detectionOrigin).normalized, out RaycastHit hit, detectionRange, targetMask | obstacleMask))
+                {
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        Debug.DrawLine(detectionOrigin, hit.point, Color.blue); // Visual debugging.
+                        canSeePlayer = true;
+                        return; // Player detected, exit the loop.
+                    }
+                }
             }
         }
+        
+        // Optional: Visual debugging to show the detection sphere and the forward direction.
+        Debug.DrawRay(detectionOrigin, Vector3.up * 2, Color.yellow);
+        Debug.DrawLine(detectionOrigin, detectionOrigin + enemy.transform.forward * detectionRange, Color.yellow);
+    }
 
-        canSeePlayer = false;
-    }
-    public bool IsCriticallyInjured()
+    void OnDrawGizmosSelected()
     {
-        return health <= criticalHealthThreshold; // Define what you consider "critically injured"
+        if (enemyTransform == null) return; // Check if the transform is set
+
+        float eyeLevel = 1.8f;
+        Gizmos.color = Color.yellow;
+        Vector3 gizmoCenter = enemyTransform.position + Vector3.up * eyeLevel;
+        Gizmos.DrawWireSphere(gizmoCenter, detectionRange);
     }
+ 
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -161,12 +153,49 @@ public class Enemy_Patrol_FSM : Enemy_BaseState
 
     }
 
-    public void TakeDamage()
+    private void CheckHealth()
     {
-        // Trigger any damage animations or effects
-        enemyAnimator.SetTrigger("Hurt");
+        EnemyHealth healthComponent = enemy.GetComponent<EnemyHealth>();
+        if (healthComponent != null)
+        {
+            if (healthComponent.currentHealth <= 0)
+            {
+               Die();// Transition to a death state
+            }
+            else if (healthComponent.currentHealth <= healthComponent.GetMaxHealth() * criticalHealthThreshold / 100)
+            {
+                fsm.ChangeState(fsm.DeathStateName); // Example state change on critical health
+            }
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Sword"))
+        {
+
+            ApplyDamage(100f, collision.collider.gameObject);
+
+            if (enemyAnimator != null)
+            {
+
+
+                enemyAnimator.SetTrigger("Hit");
+
+            }
+
+        }
+
     }
 
+    public void ApplyDamage(float damage, GameObject source)
+    {
+        var networkHealth = enemy.GetComponent<EnemyHealth>();
+        if (networkHealth != null)
+        {
+            networkHealth.TakeDamage((int)damage, source);
+            enemyAnimator.SetTrigger("Hit");// Now passing the source along
+        }
+    }
     public void Die()
     {
         // Ensure this only triggers once if health reaches 0 multiple times before the GameObject is destroyed or disabled

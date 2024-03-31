@@ -15,6 +15,9 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
     public GameObject projectilePrefab;
     public float launchForce = 10f;
     private FireBall_Attack fireBallAttack;
+    private bool isDying = false;
+    public float health = 100f;
+    public float criticalHealthThreshold = 95f;
 
     public override void Init(GameObject _owner, FSM _fsm)
     {
@@ -51,6 +54,7 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
            enemyAnimator.SetBool("IsPlayerNear", false);
             
         }
+        CheckHealth();
     
 
     }
@@ -75,6 +79,61 @@ public class Enemy_PlayerFound_FSM : Enemy_BaseState
         if (fireBallAttack != null)
         {
             fireBallAttack.FireProjectile();
+        }
+    }
+
+    private void CheckHealth()
+    {
+        EnemyHealth healthComponent = enemy.GetComponent<EnemyHealth>();
+        if (healthComponent != null)
+        {
+            if (healthComponent.currentHealth <= 0)
+            {
+                Die();
+            }
+            else if (healthComponent.currentHealth <= healthComponent.GetMaxHealth() * criticalHealthThreshold / 100)
+            {
+                fsm.ChangeState(fsm.DeathStateName); // Example state change on critical health
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Sword")) {
+        
+            ApplyDamage(100f, collision.collider.gameObject);
+
+            if (enemyAnimator != null) {
+            
+
+                enemyAnimator.SetTrigger("Hit");
+
+            }
+
+        }
+      
+    }
+
+    public void ApplyDamage(float damage, GameObject source)
+    {
+        var networkHealth = enemy.GetComponent<EnemyHealth>();
+        if (networkHealth != null)
+        {
+            networkHealth.TakeDamage((int)damage, source);
+            enemyAnimator.SetTrigger("Hit");// Now passing the source along
+        }
+    }
+
+    public void Die()
+    {
+        // Ensure this only triggers once if health reaches 0 multiple times before the GameObject is destroyed or disabled
+        if (isDying)
+        {
+            isDying = false; // Prevent multiple death triggers
+            
+            fsm.ChangeState(fsm.DeathStateName);
+            // Additional cleanup or gameplay logic here
         }
     }
 

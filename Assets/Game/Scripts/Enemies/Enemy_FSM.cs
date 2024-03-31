@@ -9,5 +9,6 @@ public class Enemy_FSM : FSM
 {
     public readonly string PatrolStateName = "Patroling";
     public readonly string EnemyFoundStateName = "EnemyFound";
+    public readonly string HitStateName = "Hit";
     public readonly string DeathStateName = "Death";
 }

@@ -40,7 +40,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInput(NetworkRunner runner, NetworkInput input) 
     {
         var data = new NetworkInputData();
-
+        data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
         data.direction = new Vector2(
          Input.GetAxis("Horizontal"),
          Input.GetAxis("Vertical")
