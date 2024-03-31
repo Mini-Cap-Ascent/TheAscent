@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,8 +65,7 @@ public class Enemy_Controller : MonoBehaviour
 
 
     }
-
-
+  
     public bool isAtDestination()
     {
         // Debug.Log($"Remaining Distance: {agent.remainingDistance}, Stopping Distance: {agent.stoppingDistance}, Path Pending: {agent.pathPending}");
@@ -88,7 +88,15 @@ public class Enemy_Controller : MonoBehaviour
         currentWaypoint = (currentWaypoint + 1) % Waypoints.Count;
 
     }
+    void OnDrawGizmos()
+    {
+        // Set the Gizmo color. Choose a color that stands out.
+        Gizmos.color = Color.yellow;
 
+        // Draw a wireframe sphere around the GameObject to represent the sight distance.
+        // This sphere is centered on the enemy's position and represents the 360-degree detection range.
+        Gizmos.DrawWireSphere(transform.position, sightDistance);
+    }
     public bool CanSeeTarget()
     {
         Debug.Log("CanSeeTarget");
