@@ -44,6 +44,7 @@ public class GameManager : Singleton<GameManager>
         EventBus.Instance.Subscribe<ExitPressedEvent>(e => EndGame());
         EventBus.Instance.Subscribe<PauseGameEvent>(e => PauseGame());
         EventBus.Instance.Subscribe<ResumeGameEvent>(e => ResumeGame());
+        EventBus.Instance.Subscribe<WeaponPickupEvent>(e => OnWeaponPickup((WeaponPickupEvent)e)); ;
     }
 
     private void OnDestroy()
@@ -142,6 +143,21 @@ public class GameManager : Singleton<GameManager>
         IsPaused = false;
         Time.timeScale = 1f;
         EventBus.Instance.Publish(new ResumeGameEvent()); // Publish the event
+    }
+    private void OnWeaponPickup(WeaponPickupEvent e)
+    {
+        Debug.Log($"Picked up weapon: {e.WeaponName}");
+
+        // Convert the string to WeaponType enum
+        if (Enum.TryParse(e.WeaponName, out WeaponManager.WeaponType weaponType))
+        {
+            // If the conversion is successful, call PickupWeapon with the enum value
+            WeaponManager.Instance.PickupWeapon(weaponType, e.WeaponPrefab);
+        }
+        else
+        {
+            Debug.LogError($"Unknown weapon name: {e.WeaponName}");
+        }
     }
     private void Update()
     {

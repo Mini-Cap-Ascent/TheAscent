@@ -6,6 +6,7 @@ using Fusion;
 using Cinemachine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 
 public class PlayerMovement : NetworkBehaviour
@@ -15,18 +16,22 @@ public class PlayerMovement : NetworkBehaviour
     public float deadZone = 0.1f;
     private Animator animator;
     private bool canMove = true;
-
-
+    private WeaponManager weaponManager;
+    private WeaponPickup pickupScript;
     private NetworkCharacterController _cc;
     private NetworkHealth healthComponent;
     private NetworkObject networkObject;
 
+
     private void Awake()
     {
+
         _cc = GetComponent<NetworkCharacterController>();
         animator = GetComponent<Animator>();
         healthComponent = GetComponent<NetworkHealth>();
         networkObject = GetComponent<NetworkObject>();
+        weaponManager = GetComponent<WeaponManager>();
+        pickupScript = GetComponent<WeaponPickup>();
     }
     //private void Update()
     //{
@@ -159,8 +164,24 @@ public class PlayerMovement : NetworkBehaviour
             _cc.jumpImpulse /= boostMultiplier; // Reset the jump impulse
         }
     }
+    // Method to attach a weapon to the player
 
-  
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WeaponSpawnPoint"))
+        {
+            // You might have a script on the weapon object that holds its details
+            WeaponPickup weaponDetails = other.GetComponent<WeaponPickup>();
+
+            // Publish the weapon pickup event
+            EventBus.Instance.Publish(new WeaponPickupEvent(weaponDetails.weaponName, other.gameObject));
+
+            // Optionally, deactivate the weapon spawn point if it should disappear after pickup
+            other.gameObject.SetActive(false);
+        }
+    }
+
 }
 
 
