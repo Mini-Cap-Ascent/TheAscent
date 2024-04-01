@@ -10,6 +10,9 @@ TagManager:
   - Enemy
   - BigBall
   - Sword
+  - Undefined
+  - Gun
+  - WeaponSpawnPoint
   layers:
   - Default
   - TransparentFX

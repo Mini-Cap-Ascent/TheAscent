@@ -15,8 +15,8 @@ public class PlayerMovement : NetworkBehaviour
     public float deadZone = 0.1f;
     private Animator animator;
     private bool canMove = true;
-
-
+    private WeaponManager weaponManager;
+    private WeaponPickup pickupScript;
     private NetworkCharacterController _cc;
     private NetworkHealth healthComponent;
     private NetworkObject networkObject;
@@ -27,6 +27,8 @@ public class PlayerMovement : NetworkBehaviour
         animator = GetComponent<Animator>();
         healthComponent = GetComponent<NetworkHealth>();
         networkObject = GetComponent<NetworkObject>();
+        weaponManager = GetComponent<WeaponManager>();
+        pickupScript = GetComponent<WeaponPickup>();
     }
     //private void Update()
     //{
@@ -159,8 +161,29 @@ public class PlayerMovement : NetworkBehaviour
             _cc.jumpImpulse /= boostMultiplier; // Reset the jump impulse
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword") || other.gameObject.CompareTag("Gun"))
+        {
+            // This should only happen on the client
+            if (networkObject.HasInputAuthority)
+            {
+                // Request the server to equip the weapon
+                RequestEquipWeapon(other.GetComponent<NetworkObject>());
+            }
+        }
+    }
+    private void RequestEquipWeapon(NetworkObject weaponPickupNetworkObject)
+    {
+        // Ensure this is the client making the request
+        if (!networkObject.HasInputAuthority) return;
 
-  
+        // RPC or Command to request server to equip weapon
+        // This is pseudocode and will depend on your implementation
+        weaponManager.RPC_ServerEquipWeapon(weaponPickupNetworkObject);
+    }
+    
+   
 }
 
 
