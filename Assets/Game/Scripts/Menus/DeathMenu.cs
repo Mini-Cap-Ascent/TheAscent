@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DeathMenu : MonoBehaviour
 {
     public GameObject DeathMenuCanvas;
+    public GameObject player;
+    public TextMeshProUGUI heightText;
+
 
     void Start()
     {
@@ -24,6 +28,8 @@ public class DeathMenu : MonoBehaviour
 
     public void ShowDeathMenu(object eventData)
     {
+        float playerHeight = player.transform.position.y;
+        heightText.text = $"Height Climbed: {playerHeight:F2} meters";
         DeathMenuCanvas.SetActive(true);
         // Optionally pause game mechanics that should stop upon death.
         Time.timeScale = 0f;
