@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Sword
+  weaponPrefab: {fileID: 1186249788268911643}
 --- !u!114 &245110812932881515
 MonoBehaviour:
   m_ObjectHideFlags: 0

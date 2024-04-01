@@ -11,30 +11,22 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     [SerializeField] private NetworkPrefabRef _weaponPrefab; // Assign this in the inspector
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+    [SerializeField] private Transform[] _weaponSpawnPoints;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
         {
-            // Calculate a spawn position for the player
-            Vector3 spawnPosition = CalculateSpawnPosition(player);
-
-            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-            _spawnedCharacters.Add(player, networkPlayerObject);
-
-            // After the player has been spawned, equip them with a default weapon
-            if (networkPlayerObject.TryGetComponent<WeaponManager>(out var weaponManager))
+            // Check if the player is the first player (host), usually PlayerRef=1 in Fusion
+            if (player != runner.LocalPlayer)
             {
-                weaponManager.EquipWeapon("Sword"); // Or the default weapon of your choice
+                // Spawn the player character
+                NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, Vector3.zero, Quaternion.identity, player);
+                _spawnedCharacters.Add(player, networkPlayerObject);
             }
         }
     }
-    private Vector3 CalculateSpawnPosition(PlayerRef player)
-    {
-        // Your logic to determine where the player should spawn
-        // For example, you might want to spawn players in different locations depending on their PlayerRef
-        return new Vector3(0, 1, 0); // This is just a placeholder
-    }
+
 
     //private void EquipPlayerWithWeapon(NetworkRunner runner, NetworkObject playerObject)
     //{
@@ -83,9 +75,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     public void OnSceneLoadDone(NetworkRunner runner) {
-
         SpawnWeapons(runner);
 
+        // Activate all weapon spawn points
+        foreach (var spawnPoint in _weaponSpawnPoints)
+        {
+            spawnPoint.gameObject.SetActive(true);
+        }
     }
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
@@ -122,16 +118,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
-            // Find all GameObjects tagged as "WeaponSpawnPoint" and spawn weapons at their locations
-            GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("WeaponSpawnPoint");
-
-            // Ensure we're only spawning one weapon per spawn point.
-            foreach (var spawnPoint in spawnPoints)
+            // Use the assigned spawn points from the inspector
+            foreach (var spawnPoint in _weaponSpawnPoints)
             {
-                // We should add a check to make sure only one weapon is spawned per spawn point.
-                if (spawnPoint.transform.childCount == 0) // Check if there's no weapon already spawned here.
+                // Check if there's no weapon already spawned here
+                if (spawnPoint.childCount == 0)
                 {
-                    runner.Spawn(_weaponPrefab, spawnPoint.transform.position, Quaternion.identity, null);
+                    runner.Spawn(_weaponPrefab, spawnPoint.position, Quaternion.identity, null);
                 }
             }
         }

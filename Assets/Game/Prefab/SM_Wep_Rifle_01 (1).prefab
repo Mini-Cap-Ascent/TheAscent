@@ -29,15 +29,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7301785735001399770}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.490305, y: -0.09999943, z: 27.336288}
-  m_LocalScale: {x: 3.3335, y: 3.3335, z: 3.3335}
+  m_LocalRotation: {x: -0.51298004, y: 0.468552, z: 0.53320897, w: 0.48269945}
+  m_LocalPosition: {x: -19.78983, y: -25.332712, z: 27.508732}
+  m_LocalScale: {x: 113.27483, y: 113.27483, z: 113.27483}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6626128585275702342}
   - {fileID: 8355909893052742447}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -95.788, y: -249.92099, z: -19.731018}
 --- !u!33 &4446126258674674971
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Rifle
+  weaponPrefab: {fileID: 7301785735001399770}
 --- !u!114 &5505472090160682035
 MonoBehaviour:
   m_ObjectHideFlags: 0

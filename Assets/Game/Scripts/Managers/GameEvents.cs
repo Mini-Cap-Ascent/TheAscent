@@ -30,7 +30,17 @@ public struct AudioSettingsChangedEvent
     public float MusicVolume;  ///< The music volume level, typically between 0.0 (mute) and 1.0 (max volume).
     public float SfxVolume;    ///< The SFX (Sound Effects) volume level, typically between 0.0 (mute) and 1.0 (max volume).
 }
+public struct WeaponPickupEvent
+{
+    public string WeaponName;
+    public GameObject WeaponPrefab;
 
+    public WeaponPickupEvent(string weaponName, GameObject weaponPrefab)
+    {
+        WeaponName = weaponName;
+        WeaponPrefab = weaponPrefab;
+    }
+}
 /// <summary>
 /// Event to notify changes in the game's resolution and fullscreen mode.
 /// </summary>

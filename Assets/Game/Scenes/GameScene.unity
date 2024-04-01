@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1808877, g: 0.041271552, b: 0.039994802, a: 1}
+  m_IndirectSpecularColor: {r: 0.180888, g: 0.041271657, b: 0.039994817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -540,6 +540,10 @@ MonoBehaviour:
     RawGuidValue: ac60b79dd63199f4391691cc3f5686c0
   _weaponPrefab:
     RawGuidValue: f906593b4f2db7e4ba9341c70fe7b00a
+  _weaponSpawnPoints:
+  - {fileID: 2078780771}
+  - {fileID: 1854141695}
+  - {fileID: 1081132497}
 --- !u!4 &38030151
 Transform:
   m_ObjectHideFlags: 0
@@ -4509,6 +4513,14 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1699217510
       objectReference: {fileID: 0}
+    - target: {fileID: 9073830039164419281, guid: 070737ca19fedf044b465dbbcd97d924, type: 3}
+      propertyPath: weaponName
+      value: Rifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 9073830039164419281, guid: 070737ca19fedf044b465dbbcd97d924, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 7301785735001399770, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7593,6 +7605,7 @@ GameObject:
   - component: {fileID: 919079132}
   - component: {fileID: 919079135}
   - component: {fileID: 919079134}
+  - component: {fileID: 919079136}
   m_Layer: 0
   m_Name: SpaceShipCarrierController
   m_TagString: Untagged
@@ -7680,6 +7693,28 @@ MonoBehaviour:
   steeringAgent: {fileID: 0}
   useMouseInput: 0
   wanderRadius: 10
+  wanderDistance: 5
+  wanderJitter: 1
+--- !u!114 &919079136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919079131}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c31cbcbba2bf04dbc71590e3fad085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weight: 1
+  target: {x: 0, y: 0, z: 0}
+  steeringAgent: {fileID: 0}
+  useMouseInput: 0
+  centralPoint: {fileID: 1662224132}
+  interestRadius: 10
+  checkInterval: 5
+  wanderRadius: 2
   wanderDistance: 5
   wanderJitter: 1
 --- !u!1001 &924443333
@@ -8824,8 +8859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb99da7d6733fa4985b612cf025bb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefab:
-    RawGuidValue: f906593b4f2db7e4ba9341c70fe7b00a
+  weaponName: Rifle
+  weaponPrefab: {fileID: 1186249788268911643, guid: 7e238bf2da79d2e43a192ccc7cf6b9c4, type: 3}
 --- !u!4 &1081132497
 Transform:
   m_ObjectHideFlags: 0
@@ -8859,8 +8894,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects:
   - {fileID: 4696237131145335995}
-  NetworkedBehaviours:
-  - {fileID: 1081132496}
+  NetworkedBehaviours: []
 --- !u!4 &1092335472 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5820800505614392543, guid: 625c63d1d4491964d8bdca1e8140e3c1, type: 3}
@@ -15389,8 +15423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb99da7d6733fa4985b612cf025bb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefab:
-    RawGuidValue: 070737ca19fedf044b465dbbcd97d924
+  weaponName: 
+  weaponPrefab: {fileID: 0}
 --- !u!4 &2078780771
 Transform:
   m_ObjectHideFlags: 0
@@ -15424,8 +15458,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects:
   - {fileID: 1854141696}
-  NetworkedBehaviours:
-  - {fileID: 2078780770}
+  NetworkedBehaviours: []
 --- !u!1 &2104353017
 GameObject:
   m_ObjectHideFlags: 0
@@ -16257,6 +16290,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wep_Rifle_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7301785735001399770, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7301785735001399770, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
+      propertyPath: m_TagString
+      value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774819747867444033, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
+      propertyPath: weaponName
+      value: Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774819747867444033, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1186249788268911643, guid: 7e238bf2da79d2e43a192ccc7cf6b9c4, type: 3}
     - target: {fileID: 8774819747867444033, guid: f906593b4f2db7e4ba9341c70fe7b00a, type: 3}
       propertyPath: weaponPrefab.RawGuidValue.Array.data[0]
       value: -1966052894002575623

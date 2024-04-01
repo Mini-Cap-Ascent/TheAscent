@@ -6,6 +6,7 @@ using Fusion;
 using Cinemachine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 
 public class PlayerMovement : NetworkBehaviour
@@ -21,8 +22,10 @@ public class PlayerMovement : NetworkBehaviour
     private NetworkHealth healthComponent;
     private NetworkObject networkObject;
 
+
     private void Awake()
     {
+
         _cc = GetComponent<NetworkCharacterController>();
         animator = GetComponent<Animator>();
         healthComponent = GetComponent<NetworkHealth>();
@@ -161,24 +164,24 @@ public class PlayerMovement : NetworkBehaviour
             _cc.jumpImpulse /= boostMultiplier; // Reset the jump impulse
         }
     }
+    // Method to attach a weapon to the player
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Sword") || other.gameObject.CompareTag("Gun") )
+        if (other.CompareTag("WeaponSpawnPoint"))
         {
-            // Ensure this is the client making the request and has authority
-            if (networkObject.HasInputAuthority)
-            {
-                // Assuming other GameObject has a tag that matches the weapon's name
-                string weaponName = other.gameObject.tag;
+            // You might have a script on the weapon object that holds its details
+            WeaponPickup weaponDetails = other.GetComponent<WeaponPickup>();
 
-                // Call EquipWeapon from the WeaponManager
-                weaponManager.EquipWeapon(weaponName);
-            }
+            // Publish the weapon pickup event
+            EventBus.Instance.Publish(new WeaponPickupEvent(weaponDetails.weaponName, other.gameObject));
+
+            // Optionally, deactivate the weapon spawn point if it should disappear after pickup
+            other.gameObject.SetActive(false);
         }
     }
-  
-    
-   
+
 }
 
 
