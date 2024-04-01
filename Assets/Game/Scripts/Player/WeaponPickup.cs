@@ -3,26 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPickup : NetworkBehaviour
+public class WeaponPickup : MonoBehaviour
 {
-    public NetworkPrefabRef weaponPrefab;
+    public string weaponName; // The name of the weapon to identify it
 
     private void OnTriggerEnter(Collider other)
     {
-        // Only the server can instantiate and assign weapons
-        if (!Runner.IsServer) return;
-
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             var weaponManager = other.GetComponent<WeaponManager>();
-
-            if (weaponManager != null && weaponPrefab.IsValid)
+            if (weaponManager != null)
             {
-                // Spawn the weapon and get the NetworkObject
-                NetworkObject weaponNetworkObject = Runner.Spawn(weaponPrefab, transform.position, transform.rotation);
+                // Call the method to equip the weapon by its name
+                weaponManager.EquipWeapon(weaponName);
 
-                // Call the RPC method to equip the weapon on the server
-                weaponManager.RPC_ServerEquipWeapon(weaponNetworkObject);
+                // Optionally, deactivate the weapon pickup if it should disappear after pickup
+                gameObject.SetActive(false);
             }
         }
     }

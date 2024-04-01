@@ -163,25 +163,20 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Sword") || other.gameObject.CompareTag("Gun"))
+        if (other.gameObject.CompareTag("Sword") || other.gameObject.CompareTag("Gun") )
         {
-            // This should only happen on the client
+            // Ensure this is the client making the request and has authority
             if (networkObject.HasInputAuthority)
             {
-                // Request the server to equip the weapon
-                RequestEquipWeapon(other.GetComponent<NetworkObject>());
+                // Assuming other GameObject has a tag that matches the weapon's name
+                string weaponName = other.gameObject.tag;
+
+                // Call EquipWeapon from the WeaponManager
+                weaponManager.EquipWeapon(weaponName);
             }
         }
     }
-    private void RequestEquipWeapon(NetworkObject weaponPickupNetworkObject)
-    {
-        // Ensure this is the client making the request
-        if (!networkObject.HasInputAuthority) return;
-
-        // RPC or Command to request server to equip weapon
-        // This is pseudocode and will depend on your implementation
-        weaponManager.RPC_ServerEquipWeapon(weaponPickupNetworkObject);
-    }
+  
     
    
 }

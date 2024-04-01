@@ -16,34 +16,43 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
-            if (player == runner.LocalPlayer)
-            {
-                // Skip spawning a character for the host if they should not participate.
-                return;
-            }
+            // Calculate a spawn position for the player
+            Vector3 spawnPosition = CalculateSpawnPosition(player);
 
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             _spawnedCharacters.Add(player, networkPlayerObject);
 
-            // After the player has been spawned, equip them with a weapon
-            EquipPlayerWithWeapon(runner, networkPlayerObject);
+            // After the player has been spawned, equip them with a default weapon
+            if (networkPlayerObject.TryGetComponent<WeaponManager>(out var weaponManager))
+            {
+                weaponManager.EquipWeapon("Sword"); // Or the default weapon of your choice
+            }
         }
+    }
+    private Vector3 CalculateSpawnPosition(PlayerRef player)
+    {
+        // Your logic to determine where the player should spawn
+        // For example, you might want to spawn players in different locations depending on their PlayerRef
+        return new Vector3(0, 1, 0); // This is just a placeholder
     }
 
-    private void EquipPlayerWithWeapon(NetworkRunner runner, NetworkObject playerObject)
-    {
-        // Check if the playerObject has a WeaponManager component
-        if (playerObject.TryGetComponent<WeaponManager>(out var weaponManager))
-        {
-            // Use the EquipWeapon method to equip the weapon to the player
-            weaponManager.EquipWeapon(_weaponPrefab, playerObject);
-        }
-    }
+    //private void EquipPlayerWithWeapon(NetworkRunner runner, NetworkObject playerObject)
+    //{
+    //    // Check if the playerObject has a WeaponManager component
+    //    if (playerObject.TryGetComponent<WeaponManager>(out var weaponManager))
+    //    {
+    //        // Determine the weapon name to equip
+    //        string weaponName = "Sword"; // Example default weapon name
+
+    //        // Use the EquipWeaponByName method to equip the weapon to the player
+    //        // Make sure the weaponName matches one of the keys in the WeaponManager's weaponPrefabs dictionary
+    //        weaponManager.EquipWeaponByName(weaponName, playerObject);
+    //    }
+    //}
 
     // ... other methods ...
 
-public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
     {
         if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
         {

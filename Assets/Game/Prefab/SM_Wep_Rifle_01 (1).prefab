@@ -122,8 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb99da7d6733fa4985b612cf025bb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefab:
-    RawGuidValue: f906593b4f2db7e4ba9341c70fe7b00a
+  weaponName: Rifle
 --- !u!114 &5505472090160682035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,8 +139,7 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 8774819747867444033}
+  NetworkedBehaviours: []
 --- !u!1 &7877449079405780582
 GameObject:
   m_ObjectHideFlags: 0

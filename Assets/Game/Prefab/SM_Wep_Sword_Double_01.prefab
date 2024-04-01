@@ -220,8 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb99da7d6733fa4985b612cf025bb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefab:
-    RawGuidValue: 00000000000000000000000000000000
+  weaponName: Sword
 --- !u!114 &245110812932881515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,5 +237,4 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 5737043490577122411}
+  NetworkedBehaviours: []
