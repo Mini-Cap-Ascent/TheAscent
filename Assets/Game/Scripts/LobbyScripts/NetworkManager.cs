@@ -11,6 +11,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public static NetworkRunner runnerInstance;
     public string lobbyName = "default";
 
+    public Transform sessionListContentParent;
+    public GameObject sessionListEntryPrefab;
+    public Dictionary<string, GameObject> sessionListUiDictionary = new Dictionary<string, GameObject>();
     private void Awake()
     {
         runnerInstance = gameObject.GetComponent<NetworkRunner>();
@@ -24,6 +27,70 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private void Start()
     {
         runnerInstance.JoinSessionLobby(SessionLobby.Shared, lobbyName);
+    }
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
+    {
+        DeleteOldSessionsFromUI(sessionList);
+
+        CompareLists(sessionList);
+
+
+
+    }
+
+    private void CompareLists(List<SessionInfo> sessionList)
+    {
+        foreach (SessionInfo session in sessionList)
+        {
+            if (sessionListUiDictionary.ContainsKey(session.Name))
+            {
+                UpdateEntryUI();
+            }
+            else
+            {
+                CreateEntryUI(session);
+            }
+        }    
+    }
+
+    private void CreateEntryUI(SessionInfo session)
+    {
+        GameObject newEntry = GameObject.Instantiate(sessionListEntryPrefab);
+        newEntry.transform.parent = sessionListContentParent;
+        SessionListEntry entryScript = newEntry.GetComponent<SessionListEntry>();
+    }
+
+    private void UpdateEntryUI()
+    {
+
+    }
+
+    private void DeleteOldSessionsFromUI(List<SessionInfo> sessionList)
+    {
+        bool isContained = false;
+        GameObject uiToDelete = null;
+
+        foreach (KeyValuePair<string, GameObject> kvp in sessionListUiDictionary)
+        {
+            string sessionKey = kvp.Key;
+
+            foreach (SessionInfo sessionInfo in sessionList)
+            {
+                if (sessionInfo.Name == sessionKey)
+                {
+                    isContained = true;
+                    break;
+                }
+            }
+
+            if (!isContained)
+            {
+                uiToDelete = kvp.Value;
+                sessionListUiDictionary.Remove(sessionKey);
+                Destroy(uiToDelete);
+            }
+        }
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -90,10 +157,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
-    {
-        Debug.Log("Session List Updated");
-    }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
