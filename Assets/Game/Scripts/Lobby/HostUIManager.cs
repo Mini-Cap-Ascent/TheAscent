@@ -1,10 +1,11 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class HostUIManager : MonoBehaviour
 {
-    public InputField roomNameInputField; // Reference to the input field where you enter the room name
+    public TMP_InputField roomNameInputField; // Reference to the input field where you enter the room name
     public BasicSpawner basicSpawner;
     public GameObject roomEntryPrefab;    // Reference to your room entry prefab
     public Transform roomListContentPanel; // Reference to the content panel where room entries will be instantiated
