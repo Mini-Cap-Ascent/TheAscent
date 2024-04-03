@@ -12,6 +12,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef _weaponPrefab; // Assign this in the inspector
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     [SerializeField] private Transform[] _weaponSpawnPoints;
+    private PlayerCont inputActions;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
@@ -27,6 +28,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    private void Awake()
+    {
+        inputActions = new PlayerCont();
+       
+        inputActions.PlayerControlz.Jump.Enable();
+    }
 
     //private void EquipPlayerWithWeapon(NetworkRunner runner, NetworkObject playerObject)
     //{
@@ -55,7 +62,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInput(NetworkRunner runner, NetworkInput input) 
     {
         var data = new NetworkInputData();
-        data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
+
+        // Check for jump input here instead of using Input.GetKeyDown(KeyCode.Space) directly
+        data.jumpPressed = inputActions.PlayerControlz.Jump.triggered;
+        //data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
         data.direction = new Vector2(
          Input.GetAxis("Horizontal"),
          Input.GetAxis("Vertical")
