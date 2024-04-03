@@ -13,9 +13,7 @@ public class SessionListEntry : MonoBehaviour
 
     public void JoinRoom()
     {
-        NetworkManager.runnerInstance.StartGame(new StartGameArgs()
-        {
-            SessionName = roomName.text,
-        });
+        // Access the NetworkManager instance and call JoinSession with the room name
+        FindObjectOfType<NetworkManager>().JoinSession(roomName.text);
     }
 }
