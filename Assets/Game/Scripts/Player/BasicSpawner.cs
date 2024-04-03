@@ -64,6 +64,32 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         input.Set(data);
     }
 
+    public async void CreateAndHostRoom(string roomName)
+    {
+        if (_runner == null)
+        {
+            _runner = gameObject.AddComponent<NetworkRunner>();
+            _runner.ProvideInput = true;
+
+            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+
+            await _runner.StartGame(new StartGameArgs
+            {
+                GameMode = GameMode.Host,
+                SessionName = roomName,
+                Scene = scene,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+                // You may want to set additional StartGameArgs properties as needed
+            });
+
+            // The rest of your networking code to set up the room...
+        }
+        else
+        {
+            Debug.LogWarning("NetworkRunner already exists, cannot create another room.");
+        }
+    }
+
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
