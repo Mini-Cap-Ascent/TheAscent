@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-
   m_IndirectSpecularColor: {r: 0.180888, g: 0.041271657, b: 0.039994817, a: 1}
-
-  m_IndirectSpecularColor: {r: 0.1808877, g: 0.041271552, b: 0.039994758, a: 1}
-
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -535,7 +531,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38030149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a825b53051bd9d04dbbd74029a207031, type: 3}
   m_Name: 
@@ -1655,7 +1651,7 @@ RectTransform:
   m_Father: {fileID: 1792209488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2510,13 +2506,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -97}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
-
 --- !u!4 &296646902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5820800505614392543, guid: 625c63d1d4491964d8bdca1e8140e3c1, type: 3}
   m_PrefabInstance: {fileID: 631626470}
   m_PrefabAsset: {fileID: 0}
-
 --- !u!1 &297477077
 GameObject:
   m_ObjectHideFlags: 0
@@ -2651,7 +2645,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 297477077}
   m_CullTransparentMesh: 1
-
 --- !u!1 &301382150
 GameObject:
   m_ObjectHideFlags: 0
@@ -6364,7 +6357,7 @@ MonoBehaviour:
   lobbyName: default
   spawnPoints: []
   sessionListContentParent: {fileID: 1429810345}
-  sessionListEntryPrefab: {fileID: 9109064062931623050, guid: 00e45c230c5518a4583d873a929d47a6, type: 3}
+  sessionListEntryPrefab: {fileID: 8278391595033983676, guid: b3b8e95fb4574104f9b35601dd6d6db2, type: 3}
   _playerPrefab:
     RawGuidValue: ac60b79dd63199f4391691cc3f5686c0
   roomNameInput: {fileID: 1717582209}
@@ -9907,7 +9900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1116175396
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13965,7 +13958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1790124614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14969,9 +14962,9 @@ RectTransform:
   m_Father: {fileID: 437598087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1856503591
 MonoBehaviour:

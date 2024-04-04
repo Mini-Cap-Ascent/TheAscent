@@ -29,6 +29,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        lobbyUI.SetActive(true);
         runnerInstance = gameObject.GetComponent<NetworkRunner>();
 
         if (runnerInstance == null)
