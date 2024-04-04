@@ -3,18 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPickup : MonoBehaviour
+public class WeaponPickup : MonoBehaviour, ICollectible
 {
     public string weaponName; // The name of the weapon to identify it
     public GameObject weaponPrefab; // The actual weapon prefab to instantiate
 
+    public void Accept(IPlayerVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Assuming your player GameObject has the tag "Player"
+        if (other.CompareTag("Player"))
         {
-            EventBus.Instance.Publish(new WeaponPickupEvent(weaponName, weaponPrefab));
+            IPlayerVisitor visitor = other.GetComponent<IPlayerVisitor>();
+            if (visitor != null)
+            {
+                Accept(visitor);
+            }
 
-            // Optionally, deactivate the weapon spawn point if it should disappear after pickup
             gameObject.SetActive(false);
         }
     }
