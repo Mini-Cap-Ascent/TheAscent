@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : NetworkBehaviour, IPlayerVisitor
+public class Player : NetworkBehaviour
 {
     private NetworkCharacterController _cc;
 
@@ -20,13 +20,5 @@ public class Player : NetworkBehaviour, IPlayerVisitor
             _cc.Move(5 * data.direction * Runner.DeltaTime);
         }
     }
-
-    public void Visit(WeaponPickup powerUp)
-    {
-        // Apply the powerup effect to the player
-        Debug.Log($"Player picked up {powerUp.weaponName}");
-        // Instantiate the weapon prefab, equip it, etc.
-    }
-
-
+   
 }
