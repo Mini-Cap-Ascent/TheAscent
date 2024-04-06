@@ -46,7 +46,6 @@ public class PlayerMovement : NetworkBehaviour
     //    }
     //}
 
-    
     private void HandleJumpInput()
     {
         _cc.RequestJump();

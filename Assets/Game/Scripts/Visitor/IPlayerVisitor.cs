@@ -1,5 +1,5 @@
 // The interface that defines the visitor's actions
 public interface IPlayerVisitor
 {
-    void Visit(WeaponPickup powerUp);
+    void Visit(PowerUpCollectible powerUp);
 }
