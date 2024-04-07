@@ -14,16 +14,16 @@ public class PatrolAction : MoveToGoal
 
     public SharedGameObjectList waypoints;
     public bool loop = true;
-    private int currentWaypointIndex = 0;
+    private int index = 0;
 
     public override void OnStart()
     {
         base.OnStart();
-        if (currentWaypointIndex < waypoints.Value.Count)
+        if (index < waypoints.Value.Count)
         {
 
             agent.isStopped = false;
-            agent.SetDestination(waypoints.Value[currentWaypointIndex].transform.position);
+            agent.SetDestination(waypoints.Value[index].transform.position);
 
         }
     }
@@ -32,19 +32,19 @@ public class PatrolAction : MoveToGoal
     {
      
         TaskStatus baseStatus = base.OnUpdate();
-        if (baseStatus != TaskStatus.Running && currentWaypointIndex != waypoints.Value.Count)
+        if (baseStatus != TaskStatus.Running && index != waypoints.Value.Count)
         {
 
-            currentWaypointIndex++;
-            if (currentWaypointIndex >= waypoints.Value.Count && loop == true) {
+            index++;
+            if (index >= waypoints.Value.Count && loop == true) {
             
-                currentWaypointIndex = 0;
+                index = 0;
             
             }
 
-            if (currentWaypointIndex < waypoints.Value.Count)
+            if (index < waypoints.Value.Count)
             {
-                agent.SetDestination(waypoints.Value[currentWaypointIndex].transform.position);
+                agent.SetDestination(waypoints.Value[index].transform.position);
             
                 return TaskStatus.Running;
             }
