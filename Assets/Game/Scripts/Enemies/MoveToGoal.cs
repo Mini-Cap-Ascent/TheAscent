@@ -25,9 +25,9 @@ public class MoveToGoal : Action
 
     public override void OnAwake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-        animationListener = GetComponent<AnimationListener>();
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        animator = gameObject.GetComponent<Animator>();
+        animationListener = gameObject.GetComponent<AnimationListener>();
     }
 
     public override void OnStart()
@@ -68,8 +68,7 @@ public class MoveToGoal : Action
             }
             else {
             
-                transform.rotation = Quaternion.Lerp(transform.rotation, 
-                    Quaternion.LookRotation(agent.desiredVelocity), angularDampingTime * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(agent.desiredVelocity), angularDampingTime * Time.deltaTime);
 
             
             }
