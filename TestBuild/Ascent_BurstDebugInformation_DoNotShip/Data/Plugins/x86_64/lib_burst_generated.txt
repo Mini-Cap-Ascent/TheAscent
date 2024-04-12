@@ -42,6 +42,7 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Photon3Unity3D;
 --assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=BehaviorDesigner.Runtime;
 --assembly-defines=Fusion.Realtime;
 --assembly-defines=Fusion.Log;
 --assembly-defines=System.Runtime;
@@ -69,7 +70,6 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --linker-options=PdbAltPath="Ascent_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\Burst
---debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Library\Burst
 --output=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -119,6 +119,7 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Photon3Unity3D;
 --assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=BehaviorDesigner.Runtime;
 --assembly-defines=Fusion.Realtime;
 --assembly-defines=Fusion.Log;
 --assembly-defines=System.Runtime;
@@ -146,7 +147,6 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --linker-options=PdbAltPath="Ascent_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\Burst
---debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Library\Burst
 --output=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -201,6 +201,7 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Photon3Unity3D;
 --assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=BehaviorDesigner.Runtime;
 --assembly-defines=Fusion.Realtime;
 --assembly-defines=Fusion.Log;
 --assembly-defines=System.Runtime;
@@ -228,7 +229,6 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --linker-options=PdbAltPath="Ascent_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\Burst
---debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Library\Burst
 --output=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -285,6 +285,7 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Photon3Unity3D;
 --assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=BehaviorDesigner.Runtime;
 --assembly-defines=Fusion.Realtime;
 --assembly-defines=Fusion.Log;
 --assembly-defines=System.Runtime;
@@ -312,7 +313,6 @@ Library: C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAs
 --linker-options=PdbAltPath="Ascent_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\Burst
---debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Library\Burst
 --output=C:\Sheridan\GameDevV2\GameplayProgramming\MiniCap-Ascent\TheAcent\TheAscent\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
