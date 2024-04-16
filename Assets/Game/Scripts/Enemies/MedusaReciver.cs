@@ -15,8 +15,16 @@ public class MedusaReciver : MonoBehaviour
         Debug.Log("Medusa shoot");
     }
     // Update is called once per frame
-    void Update()
+    void FootR() {
+    
+        Debug.Log("Medusa FootR");
+
+    }
+
+    void FootL()
     {
-        
+    
+        Debug.Log("Medusa FootL");
+
     }
 }
