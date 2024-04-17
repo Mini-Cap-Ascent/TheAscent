@@ -34,11 +34,20 @@ public class MoveToGoalAction : Action
 
     private void OnAnimatorMove()
     {
-        agent.velocity = animator.deltaPosition / Time.deltaTime;
+        if (Time.deltaTime > 0)
+        {
+            agent.velocity = animator.deltaPosition / Time.deltaTime;
+        }
     }
 
     public override TaskStatus OnUpdate()
     {
+
+        if (PausedMenu.Paused)
+        {
+            return TaskStatus.Running; // Or perhaps another TaskStatus that makes sense when paused
+        }
+
         float stoppingDistance = agent.stoppingDistance;
         if (useAgentStoppingDistance == false)
         {
