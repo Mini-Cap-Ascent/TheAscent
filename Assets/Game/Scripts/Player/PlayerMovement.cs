@@ -56,18 +56,18 @@ public class PlayerMovement : NetworkBehaviour
     }
     public override void FixedUpdateNetwork()
     {
-        if (!canMove) return; // Early return if movement is locked
+        if (!canMove || isAttacking) return; // Also stop movement when attacking
 
         Vector2 inputDirection = Vector2.zero;
+        bool hasInput = GetInput(out NetworkInputData data);
 
-        if (GetInput(out NetworkInputData data))
+        if (hasInput)
         {
             inputDirection = data.direction;
         }
 
-        // Check the dead zones for both x and y directions
-        bool hasHorizontalInput = Mathf.Abs(inputDirection.x) > deadZone;
-        bool hasVerticalInput = Mathf.Abs(inputDirection.y) > deadZone;
+        bool hasHorizontalInput = Mathf.Abs(inputDirection.x) >= deadZone;
+        bool hasVerticalInput = Mathf.Abs(inputDirection.y) >= deadZone;
 
         // Handle rotation
         if (hasHorizontalInput)
@@ -85,7 +85,7 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            // Stop the player when there is no vertical input
+            // Explicitly zero out the character controller's velocity when no vertical input is detected
             _cc.Move(Vector3.zero);
             animator.SetFloat("Speed", 0);
         }
