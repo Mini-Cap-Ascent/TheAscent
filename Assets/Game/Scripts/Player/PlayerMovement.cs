@@ -16,11 +16,13 @@ public class PlayerMovement : NetworkBehaviour
     public float deadZone = 0.1f;
     private Animator animator;
     private bool canMove = true;
+    private bool isAttacking = false;
     private WeaponManager weaponManager;
     private WeaponPickup pickupScript;
     private NetworkCharacterController _cc;
     private NetworkHealth healthComponent;
     private NetworkObject networkObject;
+    private PlayerCont inputActions;
 
 
     private void Awake()
@@ -32,6 +34,7 @@ public class PlayerMovement : NetworkBehaviour
         networkObject = GetComponent<NetworkObject>();
         weaponManager = GetComponent<WeaponManager>();
         pickupScript = GetComponent<WeaponPickup>();
+        inputActions = new PlayerCont();
     }
     //private void Update()
     //{
@@ -130,13 +133,16 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!networkObject.HasInputAuthority) return; // Only handle input if we have the authority
 
+        inputActions.PlayerControlz.Attack.Enable();
+        isAttacking = inputActions.PlayerControlz.Attack.triggered;
         // Check for attack input
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (isAttacking == true)
         {
             // Determine if we're moving
             bool isMoving = _cc.Velocity.magnitude > 0;
             if (isMoving)
             {
+
                 _cc.MovingAttack();
             }
             else

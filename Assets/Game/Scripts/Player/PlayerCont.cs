@@ -44,6 +44,15 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6865100-ef19-4bc6-8bc6-92f8a2355f31"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -159,34 +168,23 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2d532630-f5d2-4de5-8a82-20bf099a1777"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c541f37a-1fb2-4f5c-a992-d841f67ff156"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f62b5324-0cdd-4b48-ab13-1d066d7943a4"",
-                    ""path"": ""<Joystick>/stick/down"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/button5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d602ad9-af52-4cf6-816b-04701d310dc8"",
+                    ""path"": ""<HID::Logitech G920 Driving Force Racing Wheel for Xbox One>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -199,6 +197,7 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
         m_PlayerControlz = asset.FindActionMap("PlayerControlz", throwIfNotFound: true);
         m_PlayerControlz_Move = m_PlayerControlz.FindAction("Move", throwIfNotFound: true);
         m_PlayerControlz_Jump = m_PlayerControlz.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerControlz_Attack = m_PlayerControlz.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,12 +261,14 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
     private List<IPlayerControlzActions> m_PlayerControlzActionsCallbackInterfaces = new List<IPlayerControlzActions>();
     private readonly InputAction m_PlayerControlz_Move;
     private readonly InputAction m_PlayerControlz_Jump;
+    private readonly InputAction m_PlayerControlz_Attack;
     public struct PlayerControlzActions
     {
         private @PlayerCont m_Wrapper;
         public PlayerControlzActions(@PlayerCont wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerControlz_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerControlz_Jump;
+        public InputAction @Attack => m_Wrapper.m_PlayerControlz_Attack;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControlz; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,6 +284,9 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         private void UnregisterCallbacks(IPlayerControlzActions instance)
@@ -293,6 +297,9 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         public void RemoveCallbacks(IPlayerControlzActions instance)
@@ -314,5 +321,6 @@ public partial class @PlayerCont: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

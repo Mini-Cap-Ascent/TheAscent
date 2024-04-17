@@ -33,6 +33,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         inputActions = new PlayerCont();
        
         inputActions.PlayerControlz.Jump.Enable();
+        inputActions.PlayerControlz.Attack.Enable();
     }
 
     //private void EquipPlayerWithWeapon(NetworkRunner runner, NetworkObject playerObject)
@@ -65,6 +66,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         // Check for jump input here instead of using Input.GetKeyDown(KeyCode.Space) directly
         data.jumpPressed = inputActions.PlayerControlz.Jump.triggered;
+        
         //data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
         data.direction = new Vector2(
          Input.GetAxis("Horizontal"),
