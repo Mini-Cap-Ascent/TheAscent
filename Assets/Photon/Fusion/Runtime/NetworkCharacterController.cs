@@ -169,7 +169,8 @@ namespace Fusion
 
             if (direction == default)
             {
-                horizontalVel = Vector3.Lerp(horizontalVel, default, braking * deltaTime);
+                horizontalVel = Vector3.zero;
+                //horizontalVel = Vector3.Lerp(horizontalVel, default, braking * deltaTime);
             }
             else
             {

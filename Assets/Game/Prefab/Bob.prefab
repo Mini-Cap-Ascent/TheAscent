@@ -214,7 +214,7 @@ MonoBehaviour:
   gravity: -10
   jumpImpulse: 26
   acceleration: 7.88
-  braking: 5
+  braking: 1000
   maxSpeed: 8.83
   rotationSpeed: 50
 --- !u!82 &422991329931685523
