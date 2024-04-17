@@ -54,38 +54,46 @@ public class PlayerMovement : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
 
-        if(!canMove) return;
+        if (!canMove) return;
 
         Vector2 inputDirection = Vector2.zero;
 
+        // Get the input data
         if (GetInput(out NetworkInputData data))
         {
             inputDirection = data.direction;
         }
 
+        // Smaller deadZone value for more responsive input handling
+        float deadZone = 0.05f;  // Reduced from 0.1f to 0.05f
+
+        // Rotate based on horizontal input
         if (Mathf.Abs(inputDirection.x) > deadZone)
         {
             float rotationAmount = inputDirection.x * rotationSpeed * Runner.DeltaTime;
             transform.Rotate(0, rotationAmount, 0);
         }
 
+        // Move forward/backward based on vertical input
         if (Mathf.Abs(inputDirection.y) > deadZone)
         {
-            Vector3 moveDirection = transform.forward * inputDirection.y; 
+            Vector3 moveDirection = transform.forward * inputDirection.y;
             _cc.Move(moveSpeed * moveDirection * Runner.DeltaTime);
-            // Set the animator "Speed" parameter
             animator.SetFloat("Speed", moveSpeed * inputDirection.magnitude);
-        } 
+        }
         else
         {
             animator.SetFloat("Speed", 0);
         }
+
+        // Jumping action
         if (data.jumpPressed)
         {
             _cc.RequestJump();
-            
             animator.SetTrigger("IsJumping");
         }
+
+        // Handle attack inputs
         HandleAttackInput();
     }
 
