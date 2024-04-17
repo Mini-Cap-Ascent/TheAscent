@@ -213,9 +213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -10
   jumpImpulse: 26
-  acceleration: 5
+  acceleration: 7.88
   braking: 5
-  maxSpeed: 3.5
+  maxSpeed: 8.83
   rotationSpeed: 50
 --- !u!82 &422991329931685523
 AudioSource:
@@ -5005,6 +5005,10 @@ PrefabInstance:
     - target: {fileID: 1186249788268911643, guid: 7e238bf2da79d2e43a192ccc7cf6b9c4, type: 3}
       propertyPath: m_Name
       value: SM_Wep_Sword_Double_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1186249788268911643, guid: 7e238bf2da79d2e43a192ccc7cf6b9c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1188196443187046757, guid: 7e238bf2da79d2e43a192ccc7cf6b9c4, type: 3}
       propertyPath: m_LocalPosition.x
