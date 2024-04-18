@@ -34,6 +34,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         lobbyUI.SetActive(true);
         runnerInstance = gameObject.GetComponent<NetworkRunner>();
         inputActions = new PlayerCont();
+        inputActions.PlayerControlz.Jump.Enable();
 
         if (runnerInstance == null)
         {
@@ -245,7 +246,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         var data = new NetworkInputData();
-        data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
+       // data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
         data.jumpPressed = inputActions.PlayerControlz.Jump.triggered;
         data.attackPressed = Input.GetKeyDown(KeyCode.Keypad1);
         data.direction = new Vector2(
