@@ -243,6 +243,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         var data = new NetworkInputData();
         data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        data.attackPressed = Input.GetKeyDown(KeyCode.Keypad1);
         data.direction = new Vector2(
          Input.GetAxis("Horizontal"),
          Input.GetAxis("Vertical")

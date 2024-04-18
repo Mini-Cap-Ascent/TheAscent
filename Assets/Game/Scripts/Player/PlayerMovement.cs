@@ -161,6 +161,8 @@ public class PlayerMovement : NetworkBehaviour
             {
                 _cc.IdleAttack();
             }
+
+            isAttacking = false;
         }
     }
     public void ActivateJumpBoost(float boostMultiplier, float duration)
