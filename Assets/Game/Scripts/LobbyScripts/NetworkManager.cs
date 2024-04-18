@@ -33,6 +33,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         DontDestroyOnLoad(gameObject);
         lobbyUI.SetActive(true);
         runnerInstance = gameObject.GetComponent<NetworkRunner>();
+        inputActions = new PlayerCont();
 
         if (runnerInstance == null)
         {
