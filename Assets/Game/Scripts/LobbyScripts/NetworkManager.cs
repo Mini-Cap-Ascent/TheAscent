@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEditor.Rendering;
+using UnityEngine.UI;
 
 
 
@@ -25,6 +26,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     public TMP_InputField roomNameInput;
     public GameObject lobbyUI;
+    public Button joinButton;
 
     private void Awake()
     {
@@ -65,13 +67,13 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         Debug.Log($"Creating session as host: {sessionName}");
 
-        StartGame(GameMode.Host, sessionName);
+        StartGame(GameMode.AutoHostOrClient, sessionName);
 
         GameObject newEntry = Instantiate(sessionListEntryPrefab, sessionListContentParent);
         SessionListEntry entryScript = newEntry.GetComponent<SessionListEntry>();
         entryScript.roomName.text = sessionName;
         entryScript.playerCount.text = "1/10"; // Assuming 1 player (the host) and a max of 10 players
-        entryScript.joinButton.interactable = true;
+        //entryScript.joinButton.interactable = true;
         newEntry.SetActive(true);
 
         sessionListUiDictionary.Add(sessionName, newEntry);
@@ -79,7 +81,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     async void StartGame(GameMode mode, string sessionName)
     {
-
         runnerInstance.ProvideInput = true;
 
         // Assuming the current scene is the GameScene, since everything is integrated now
@@ -109,26 +110,24 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void JoinSession(string sessionName)
     {
+        Debug.Log("Awooga");
         Debug.Log($"Joining session as client: {sessionName}");
 
-        StartGame(GameMode.Client, sessionName);
+        StartGame(GameMode.AutoHostOrClient, sessionName);
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player joined: {player}");
-        if (runner.IsServer)
-        {
-            // Check if the player is the first player (host), usually PlayerRef=1 in Fusion
-            if (player != runner.LocalPlayer)
-            {
-                // Spawn the player character
-                NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, Vector3.zero, Quaternion.identity, player);
-                _spawnedCharacters.Add(player, networkPlayerObject);
-            }
-            // Update the player count in the lobby UI
+        Debug.Log($"Player joined: {player}, IsServer: {runner.IsServer}, IsClient: {runner.IsClient}");
+            // Create a unique position for the player
+            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 1, 0);
+            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+            // Keep track of the player avatars for easy access
+            _spawnedCharacters.Add(player, networkPlayerObject);
+
             UpdatePlayerCountInUI(runner.SessionInfo);
-        }
+
+        Debug.Log($"Spawned player prefab for {player} at {spawnPosition}");
     }
 
     private void UpdatePlayerCountInUI(SessionInfo sessionInfo)
@@ -159,11 +158,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             SessionListEntry entryScript = newEntry.GetComponent<SessionListEntry>();
             entryScript.roomName.text = session.Name;
             entryScript.playerCount.text = $"{session.PlayerCount}/{session.MaxPlayers}";
-            entryScript.joinButton.interactable = session.IsOpen && session.PlayerCount < session.MaxPlayers;
+            //entryScript.joinButton.interactable = session.IsOpen && session.PlayerCount < session.MaxPlayers;
             newEntry.SetActive(true);
 
             // Add a listener to the join button
-            entryScript.joinButton.onClick.AddListener(() => JoinSession(session.Name));
+            //entryScript.joinButton.onClick.AddListener(() => JoinSession(session.Name));
         }
     }
     private void CompareLists(List<SessionInfo> sessionList)
@@ -194,7 +193,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         entryScript.roomName.text = session.Name;
         entryScript.playerCount.text = session.PlayerCount.ToString() + "/" + session.MaxPlayers.ToString();
-        entryScript.joinButton.interactable = session.IsOpen;
+        //entryScript.joinButton.interactable = session.IsOpen;
 
         newEntry.SetActive(session.IsVisible);
     }
@@ -207,7 +206,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         entryScript.roomName.text = session.Name;
         entryScript.playerCount.text = session.PlayerCount.ToString() + "/" + session.MaxPlayers.ToString();
-        entryScript.joinButton.interactable = session.IsOpen;
+        //entryScript.joinButton.interactable = session.IsOpen;
 
         newEntry.SetActive(session.IsVisible);
     }
