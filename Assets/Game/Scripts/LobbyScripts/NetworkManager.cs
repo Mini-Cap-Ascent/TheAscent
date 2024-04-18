@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEditor.Rendering;
+using UnityEngine.InputSystem;
 
 
 
@@ -25,6 +26,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     public TMP_InputField roomNameInput;
     public GameObject lobbyUI;
+    private PlayerCont inputActions;
 
     private void Awake()
     {
@@ -243,6 +245,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         var data = new NetworkInputData();
         data.jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        data.jumpPressed = inputActions.PlayerControlz.Jump.triggered;
         data.attackPressed = Input.GetKeyDown(KeyCode.Keypad1);
         data.direction = new Vector2(
          Input.GetAxis("Horizontal"),
