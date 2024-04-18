@@ -141,8 +141,12 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!networkObject.HasInputAuthority) return; // Only handle input if we have the authority
 
-        inputActions.PlayerControlz.Attack.Enable();
-        isAttacking = inputActions.PlayerControlz.Attack.triggered;
+      
+        //get input with 1 on number pad
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            isAttacking = true;
+        }
         // Check for attack input
         if (isAttacking == true)
         {
